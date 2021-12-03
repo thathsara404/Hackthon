@@ -1,0 +1,11 @@
+// Include presets and plugins
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "entry" // use browser list file and this says use only the babel-polyfill which are not built-in the target. with this use babell polyfill in index.js file
+            }
+        ]
+    ]
+}
