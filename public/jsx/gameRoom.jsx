@@ -12,7 +12,7 @@ const GameRoom = ( { title }) => {
         document.title = title;
         // Connect to Game
         if (!isGameRoomConnected) {
-            WebSocket.connect('gameSpace', 'thathsara', '0001');
+            WebSocket.connect('gameSpace', 'thathsara', Math.floor((Math.random() * 100) + 1));
         }
     });
 

@@ -18,7 +18,7 @@ export class WebSocket {
 
         socket.on('message', (message) => {
             const userJoined = { 'messageType': message.messageType,
-                'userName': message.userName, 'userId': message.userID };
+                'userName': message.userName, 'userId': message.userID, 'AllUserIds': message.allUserIds };
             console.log(userJoined);
         });
 

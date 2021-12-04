@@ -2,6 +2,10 @@
 
 const config = {
     APP: 'Learn-To-Earn',
+    APP_PORT: {
+        DEV: 1223,
+        PROD: 8080
+    },
     ROUTE_PATH: '/api',
     DB: {
         CONNECTION_STRING: 'mongodb://'.concat(process.env.MONGODB_USERNAME || 'mongo')
@@ -13,6 +17,13 @@ const config = {
             .concat((process.env.authSource) ? '&authSource='.concat(process.env.authSource) : '')
             .concat((process.env.retryWrites) ? '&retryWrites='.concat(process.env.retryWrites) : '')
             .concat((process.env.w) ? '&w='.concat(process.env.w) : '')
+    },
+    REDIS: {
+        PORT: process.env.PORT || 6379,
+        HOST: process.env.HOST || '127.0.0.1',
+        FAMILY: process.env.FAMILY || 4,
+        PASSWORD: process.env.PASSWORD || '',
+        DB: process.env.DB || 0
     },
     SESSION: {
         COLLECTION_NAME: 'userSessions',
