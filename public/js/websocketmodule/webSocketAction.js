@@ -1,0 +1,7 @@
+'use strict';
+
+export const WebSocketAction = {
+    NEW_USER_CONNECTED: 'USER_CONNECTED',
+    USER_DISCONNECTED: 'USER_DISCONNECTED',
+    NEW_GAME_ROOM_REQUEST: 'NEW_GAME_ROOM_REQUEST'
+};

@@ -22,7 +22,7 @@ const gameRoomServer = (server) => {
             const newJoinerID = data.userId;
             const newJoinerUsername = data.userName;
             // Save user ID in the user socket session for later usages
-            socket.userID = newJoinerID;
+            socket.userId = newJoinerID;
             storeNewJoiner(newJoinerID, newJoinerUsername);
             console.log('roomName: ' + data.room + 'UN: ' + newJoinerUsername, 'userID: ' + data.userId);
             // Send most recent live users to all
@@ -52,13 +52,13 @@ const gameRoomServer = (server) => {
 
         // Track disconnected users
         socket.on('disconnect', () => {
-            console.log('user disconnected');
-            const disconnectedUserId = socket.userID;
+            const disconnectedUserId = socket.userId;
+            console.log('user disconnected: ', disconnectedUserId);
             removeDisconnectedUser(disconnectedUserId);
             // Send all live users
             getAllConnectedUsersAndPendingGameRoomRequests((allUserIds, allPendingGameRequest) => {
                 gameRoom.emit('message', { 'messageType': MessageTypes.USER_DISCONNECTED,
-                    'userID': disconnectedUserId, 'allUserIds': allUserIds,
+                    'disconnectedUserId': disconnectedUserId, 'allUserIds': allUserIds,
                     'allPendingGameRoomRequests': allPendingGameRequest });
             });
         });

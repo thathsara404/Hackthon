@@ -14,15 +14,15 @@ export const gameRoom = (state = initialState, action) => {
 
     switch (type) {
         case UPDATE_LIVE_USERS: {
-            const liveUser = { 'userName': payload.userName, 'userId': payload.userId };
             // TODO: makesure no duplicate
-            return { ...state, liveUsers: [...state.liveUsers, liveUser] };
+            return { ...state, liveUsers: [payload] };
         }
         case USER_CONNECTED: {
             return { ...state, userConnected: payload };
         }
         case UPDATE_PENDING_GAME_ROOM_REQUESTS: {
-            return { ...state, pendingGameRequests: [...state.pendingGameRequests, payload] };
+            // TODO: Change this logic when multiple game requests are allowed
+            return { ...state, pendingGameRequests: payload };
         }
         default: {
             return state;

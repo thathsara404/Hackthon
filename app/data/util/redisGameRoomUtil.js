@@ -15,7 +15,7 @@ const removeDisconnectedUser = (userID) => {
     console.log('removing user.. ', userID);
     redisInstance.srem(USERS_LIVE, userID);
     // TODO: remove from the hashmap
-    redisInstance.hkeys(`user:${userID}`, (err, result) => {
+    redisInstance.hdel(`user:${userID}`, (err, result) => {
         console.log(result);
     });
 };
@@ -34,7 +34,7 @@ const getAllConnectedUsersAndPendingGameRoomRequests = (callbackFunction) => {
 
 const storeNewGameRoomRequest = ({ roomId, roomName, createdByUserId }) => {
     // Store pending Game Room details in a Hash
-    redisInstance.hmset(`groom:${roomId}`, 'gameRoomName', roomName, 'cratedBy', createdByUserId);
+    redisInstance.hmset(`groom:${roomId}`, 'gameRoomName', roomName, 'cratedBy', createdByUserId, 'noUsers', 0);
     // Store pending Game Room request IDs in 'gameRoomRequests:pending' Set
     redisInstance.sadd(GROOMS_PENDING, roomId);
 };
