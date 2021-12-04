@@ -1,25 +1,51 @@
 'use strict';
 
 const redisInstance = require('../connector/redisConnector');
+const { USERS_LIVE, GROOMS_PENDING } = require('../../const/redisKeys');
 
 const storeNewJoiner = (newJoinerID, newJoinerUsername) => {
     // Store connected user detail in a Hash
     redisInstance.hmset(`user:${newJoinerID}`, 'userName', newJoinerUsername);
     // Store connected user ID in 'users:live' Set
-    redisInstance.sadd('users:live', newJoinerID);
+    redisInstance.sadd(USERS_LIVE, newJoinerID);
 };
 
 const removeDisconnectedUser = (userID) => {
     // Store connected user ID in 'users:live' Set
-    redisInstance.srem('users:live', userID);
+    console.log('removing user.. ', userID);
+    redisInstance.srem(USERS_LIVE, userID);
+    // TODO: remove from the hashmap
+    redisInstance.hkeys(`user:${userID}`, (err, result) => {
+        console.log(result);
+    });
 };
 
-const getAllConnectedUsers = (callBackFunction) => {
-    redisInstance.smembers('users:live', (err, allLiveUsers) => {
+const getAllConnectedUsersAndPendingGameRoomRequests = (callbackFunction) => {
+    redisInstance.smembers(USERS_LIVE, (err, allLiveUsers) => {
         if (!err) {
-            callBackFunction(allLiveUsers);
+            redisInstance.smembers(GROOMS_PENDING, (err, allPendingRooms) => {
+                if (!err) {
+                    callbackFunction(allLiveUsers, allPendingRooms);
+                }
+            });
         }
     });
 };
 
-module.exports = { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsers };
+const storeNewGameRoomRequest = ({ roomId, roomName, createdByUserId }) => {
+    // Store pending Game Room details in a Hash
+    redisInstance.hmset(`groom:${roomId}`, 'gameRoomName', roomName, 'cratedBy', createdByUserId);
+    // Store pending Game Room request IDs in 'gameRoomRequests:pending' Set
+    redisInstance.sadd(GROOMS_PENDING, roomId);
+};
+
+const getAllPendingGameRooms = (callbackFunction) => {
+    redisInstance.smembers(GROOMS_PENDING, (err, allPendingRooms) => {
+        if (!err) {
+            callbackFunction(allPendingRooms);
+        }
+    });
+};
+
+module.exports = { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsersAndPendingGameRoomRequests,
+    storeNewGameRoomRequest, getAllPendingGameRooms };

@@ -2,26 +2,33 @@
 
 import io from 'socket.io-client';
 import { store } from '../redux/store';
-import { USER_CONNECTED } from '../redux/action/gameRoomAction';
+import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS } from '../redux/action/gameRoomAction';
 
 export class WebSocket {
 
     static connect (roomName, userName, userID) {
 
-        const socket = io(`/${roomName}`);
+        this.socket = io(`/${roomName}`);
 
-        socket.on('connect', () => {
-            socket.emit('join', { room: roomName, userName: userName, userId: userID });
+        this.socket.on('connect', () => {
+            this.socket.emit('join', { room: roomName, userName: userName, userId: userID });
             store.dispatch({ type: USER_CONNECTED,
                 payload: true });
         });
 
-        socket.on('message', (message) => {
+        this.socket.on('message', (message) => {
             const userJoined = { 'messageType': message.messageType,
-                'userName': message.userName, 'userId': message.userID, 'AllUserIds': message.allUserIds };
+                'userName': message.userName, 'userId': message.userID, 'AllUserIds': message.allUserIds,
+                'allPendingGameRoomRequests': message.allPendingGameRoomRequests };
+            store.dispatch({ type: UPDATE_PENDING_GAME_ROOM_REQUESTS,
+                payload: message.allPendingGameRoomRequests });
             console.log(userJoined);
         });
 
+    } 
+
+    static createNewGameRoom (roomId, roomName, userId) {
+        this.socket.emit('message', { 'roomId': roomId, 'roomName': roomName, 'userId': userId });
     } 
 
     /*

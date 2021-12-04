@@ -1,10 +1,11 @@
 'use strict';
 
-import { UPDATE_LIVE_USERS, USER_CONNECTED } from '../action/gameRoomAction';
+import { UPDATE_LIVE_USERS, USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS } from '../action/gameRoomAction';
 
 const initialState = {
     liveUsers: [],
-    userConnected: false
+    userConnected: false,
+    pendingGameRequests: []
 };
 
 export const gameRoom = (state = initialState, action) => {
@@ -18,8 +19,10 @@ export const gameRoom = (state = initialState, action) => {
             return { ...state, liveUsers: [...state.liveUsers, liveUser] };
         }
         case USER_CONNECTED: {
-            console.log('---payload------', payload);
             return { ...state, userConnected: payload };
+        }
+        case UPDATE_PENDING_GAME_ROOM_REQUESTS: {
+            return { ...state, pendingGameRequests: [...state.pendingGameRequests, payload] };
         }
         default: {
             return state;

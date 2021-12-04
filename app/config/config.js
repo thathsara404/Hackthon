@@ -23,7 +23,7 @@ const config = {
         HOST: process.env.HOST || '127.0.0.1',
         FAMILY: process.env.FAMILY || 4,
         PASSWORD: process.env.PASSWORD || '',
-        DB: process.env.DB || 0
+        DB: process.env.DB || 1
     },
     SESSION: {
         COLLECTION_NAME: 'userSessions',

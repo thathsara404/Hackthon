@@ -1,10 +1,12 @@
 'use strict';
 
-const { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsers } = require('./app/data/util/redisGameRoomUtil');
+const { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsersAndPendingGameRoomRequests,
+    storeNewGameRoomRequest, getAllPendingGameRooms } = require('./app/data/util/redisGameRoomUtil');
 
 const MessageTypes = {
     USER_CONNECTED: 'USER_CONNECTED',
-    USER_DISCONNECTED: 'USER_DISCONNECTED'
+    USER_DISCONNECTED: 'USER_DISCONNECTED',
+    NEW_GAME_ROOM_REQUEST: 'NEW_GAME_ROOM_REQUEST'
 };
 
 const gameRoomServer = (server) => {
@@ -14,6 +16,7 @@ const gameRoomServer = (server) => {
     const gameRoom = io.of('/gameSpace');
     gameRoom.on('connection', (socket) => {
 
+        // Join new users to the gameSpace
         socket.on('join', (data) => {
             socket.join(data.room);
             const newJoinerID = data.userId;
@@ -23,25 +26,40 @@ const gameRoomServer = (server) => {
             storeNewJoiner(newJoinerID, newJoinerUsername);
             console.log('roomName: ' + data.room + 'UN: ' + newJoinerUsername, 'userID: ' + data.userId);
             // Send most recent live users to all
-            getAllConnectedUsers((allUserIds) => {
+            getAllConnectedUsersAndPendingGameRoomRequests((allUserIds, allPendingGameRequest) => {
                 gameRoom.in(data.room).emit('message', { 'messageType': MessageTypes.USER_CONNECTED,
-                    'userName': data.userName, 'userID': data.userId, 'allUserIds': allUserIds });
+                    'userName': data.userName, 'userID': data.userId, 'allUserIds': allUserIds, 
+                    'allPendingGameRoomRequests': allPendingGameRequest });
             });
         });
 
+        // Retrieve gameSpace messages (new Game Room Requests) and braodcast among others
         socket.on('message', (data) => {
-            console.log(`message: ${data.msg}`);
-            gameRoom.in(data.room).emit('message', data.msg);
+            console.log(`Room: ${data.room}`);
+            // GameRoom.in(data.room).emit('message', { 'messageType': MessageTypes.NEW_GAME_ROOM_REQUEST });
+
+            const items = { 'roomId': data.roomId, 'roomName': data.roomName,
+                'createdByUserId': data.userId };
+            console.log('IIIII', items);
+            storeNewGameRoomRequest({ 'roomId': data.roomId, 'roomName': data.roomName,
+                'createdByUserId': data.userId });
+
+            getAllPendingGameRooms((allPendingGameRequest) => {
+                gameRoom.emit('message', { 'messageType': MessageTypes.NEW_GAME_ROOM_REQUEST,
+                    'allPendingGameRoomRequests': allPendingGameRequest });
+            });
         });
 
+        // Track disconnected users
         socket.on('disconnect', () => {
             console.log('user disconnected');
             const disconnectedUserId = socket.userID;
             removeDisconnectedUser(disconnectedUserId);
-            // Send most recent live users to all
-            getAllConnectedUsers((allUserIds) => {
+            // Send all live users
+            getAllConnectedUsersAndPendingGameRoomRequests((allUserIds, allPendingGameRequest) => {
                 gameRoom.emit('message', { 'messageType': MessageTypes.USER_DISCONNECTED,
-                    'userID': disconnectedUserId, 'allUserIds': allUserIds });
+                    'userID': disconnectedUserId, 'allUserIds': allUserIds,
+                    'allPendingGameRoomRequests': allPendingGameRequest });
             });
         });
 
