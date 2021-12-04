@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 import { MainRouter } from './Main/MainRouter.jsx';
 

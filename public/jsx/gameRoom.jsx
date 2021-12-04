@@ -1,9 +1,19 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { WebSocket } from '../js/websocketmodule/WebSocket';
+import { useSelector } from 'react-redux';
+import { getGameRoomConnectedStatus } from '../js/redux/selector/gameRoomSelector';
 
 const GameRoom = ( { title }) => {
+
+    const isGameRoomConnected = useSelector(state => getGameRoomConnectedStatus(state));
+
     useEffect(() => {
         document.title = title;
+        // Connect to Game
+        if (!isGameRoomConnected) {
+            WebSocket.connect('gameSpace', 'thathsara', '0001');
+        }
     });
 
     return (

@@ -1,3 +1,5 @@
+'use strict';
+
 import { HttpUtil } from '../../httpmodule/httpUtil';
 import { API_PATH } from '../../httpmodule/apiPath';
 

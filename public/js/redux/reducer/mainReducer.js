@@ -1,3 +1,5 @@
+'use strict';
+
 import { UPDATE_LOGIN_STATUS } from '../action/mainAction';
 
 const initialState = {

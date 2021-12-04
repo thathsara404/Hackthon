@@ -2,6 +2,7 @@
 
 const Bundler = require('parcel-bundler');
 const app = require('./app');
+const gameRoomServer = require('./gameRoomWebSocketServer');
 
 const entryFiles = ['./public/main.html'];
 const options = {
@@ -17,9 +18,12 @@ const bundler = new Bundler(entryFiles, options);
 app.use(bundler.middleware());
 
 const port = 1223;
-app.listen(port, (err) => {
+const server = app.listen(port, (err) => {
     if (err) {
         console.log('Error app listening ...');
     }
     console.log(`App is running on port: ${port}`);
 });
+
+// Start Game Room Server
+gameRoomServer(server);
