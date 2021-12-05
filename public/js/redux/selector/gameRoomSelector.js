@@ -8,3 +8,7 @@ export const getCurrentGameRequestJoinedUserCount = state => state.gameRoom?.pen
 
 export const getUserJoinedStatusInSubRoom = state => state.gameRoom?.subRoomStatus;
 
+export const getCurrentGameRoomId = state => state.gameRoom?.pendingGameRequestsInfo[0]?.gameRoomId;
+
+export const getGameStartedStatus = state => state.gameRoom?.newGameStarted;
+

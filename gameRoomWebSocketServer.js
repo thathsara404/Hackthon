@@ -14,7 +14,9 @@ const MessageTypes = {
     // When someone join to the main room
     GAME_ROOM_UPDATE: 'GAME_ROOM_UPDATE',
     // When user entered to a new game room by clicking the join room button
-    NEW_ROOM_STARTED: 'NEW_ROOM_STARTED'
+    NEW_ROOM_STARTED: 'NEW_ROOM_STARTED',
+    // Inform game start
+    START_GAME: 'START_GAME'
 };
 
 const gameRequestTypes = {
@@ -97,6 +99,8 @@ const gameRoomServer = (server) => {
                             gameRoom.emit('message', { 'messageType': MessageTypes.GAME_ROOM_UPDATE,
                                 'allPendingGameRoomRequests': allPendingGameRequest, 'gameRoomsInfo': gameRoomsInfo });
                         });
+                    }, (room) => {
+                        gameRoom.in(room).emit('message', { 'messageType': MessageTypes.START_GAME });
                     }, data.roomId);
                 }
                     break;

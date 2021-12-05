@@ -87,7 +87,7 @@ const getAllPendingGameRooms = (callbackFunction) => {
     });
 };
 
-const updateGameRoomsInfo = (callbackFunction, roomId) => {
+const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, roomId) => {
     redisInstance.hincrby(`groom:${roomId}`, 'noUsers', 1);
     redisInstance.hgetall(`groom:${roomId}`, (err, result) => {
         if (!err) {
@@ -97,6 +97,7 @@ const updateGameRoomsInfo = (callbackFunction, roomId) => {
                     if (!err) {
                         console.log('Room Deleted Max count met...', result);
                         callbackFunction();
+                        callbackFunctionStartGame(roomId);
                     } else {
                         console.log(err);
                     }

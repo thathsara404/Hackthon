@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { WebSocket } from '../js/websocketmodule/WebSocket';
 import { useSelector } from 'react-redux';
 import { getGameRoomConnectedStatus, getNewGameRequests,
-    getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom } from '../js/redux/selector/gameRoomSelector';
+    getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom,
+    getCurrentGameRoomId, getGameStartedStatus } from '../js/redux/selector/gameRoomSelector';
 import { DEFAULT_ROOM_NAME } from './const/chatRoomConst';
 
 const GameRoom = ( { title }) => {
@@ -12,6 +13,8 @@ const GameRoom = ( { title }) => {
     const pendingGameRequests = useSelector(state => getNewGameRequests(state));
     const pendingRequestUserCount = useSelector(state => getCurrentGameRequestJoinedUserCount(state));
     const userJoinedStatusInSubRoom = useSelector(state => getUserJoinedStatusInSubRoom(state));
+    const currentGameRoomId = useSelector(state => getCurrentGameRoomId(state));
+    const gameStartedStatus = useSelector(state => getGameStartedStatus(state));
 
     useEffect(() => {
         document.title = title;
@@ -28,12 +31,15 @@ const GameRoom = ( { title }) => {
     };
 
     const joinGame = () => {
-        WebSocket.joindNewGameRoom('0001', '1000001');
+        WebSocket.joindNewGameRoom(currentGameRoomId, '1000001');
     };
 
     const Content = () => {
         if (userJoinedStatusInSubRoom) {
             // Handle sub room question rendering...
+            if (gameStartedStatus) {
+                return (<h1>Game Started ...</h1>);
+            }
             return (<h1>Let the game begin ...</h1>);
         } 
         // Game Room

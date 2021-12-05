@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { store } from '../redux/store';
 import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
     UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
-    UPDATE_USER_STATUS_IN_SUB_ROOM
+    UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS
 } from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
 
@@ -79,7 +79,7 @@ export class WebSocket {
             'userId': userId, 'requestType': 'CREATE_GAME' });
     }
 
-    static joindNewGameRoom (roomId, userId, mainRoom) {
+    static joindNewGameRoom (roomId, userId) {
 
         // Update Redux Status for the user indicating the user in a sub room
         store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
@@ -88,27 +88,27 @@ export class WebSocket {
         const tstmainRoom = 'gameSpace';
         const newRoomSocket = this.socket = io(`/${tstmainRoom}`);
         newRoomSocket.emit('message', { 'roomId': roomId, 'userId': userId, 'requestType': 'JOIN_GAME' });
-        const room = 'Test';
+
         newRoomSocket.on('connect', () => {
             // Emiting to everybody
-            newRoomSocket.emit('join', { room: room, 'requestType': 'JOIN_SUB_ROOM' });
+            newRoomSocket.emit('join', { room: roomId, 'requestType': 'JOIN_SUB_ROOM' });
         });
-        newRoomSocket.emit('message', { 'roomId': roomId, 'roomName': roomId, room: room,
+        newRoomSocket.emit('message', { 'roomId': roomId, 'roomName': roomId, room: roomId,
             'userId': userId, 'requestType': 'NEW_ROOM' });
 
         // New Room Listener
-        newRoomSocket.on('message', (msg) => {
-            console.log('---------->>>>', msg);
+        newRoomSocket.on('message', (message) => {
+            console.log('Message From New Game Room: ', message);
+            const messageType = message.messageType;
+            switch (messageType) {
+                case WebSocketAction.START_GAME:
+                    store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
+                        payload: true });
+                    break;
+                default:
+                    break;
+            }
         });
     }
-
-    /*
-     * Static sendDisconnect (socket) {
-     *     socket.on('disconnect', () => {
-     *         io.emit('myCustomEvent', { customEvent: 'Custom Message' });
-     *         console.log('Socket disconnected: ' + _id);
-     *     });
-     * }
-     */
 
 }
