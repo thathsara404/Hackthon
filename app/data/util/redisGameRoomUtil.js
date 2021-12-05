@@ -72,10 +72,39 @@ const storeNewGameRoomRequest = ({ roomId, roomName, createdByUserId }) => {
 const getAllPendingGameRooms = (callbackFunction) => {
     redisInstance.smembers(GROOMS_PENDING, (err, allPendingRooms) => {
         if (!err) {
-            callbackFunction(allPendingRooms);
+            const roomInfoProcess = allPendingRooms.map(roomId => {
+                return redisInstance.hgetall(`groom:${roomId}`, (err, result) => {
+                    if (!err) {
+                        result.gameRoomId = roomId;
+                        return result;
+                    }
+                });
+            });
+            Promise.all(roomInfoProcess).then((roomsInfoResult) => {
+                callbackFunction(allPendingRooms, roomsInfoResult);
+            });
+        }
+    });
+};
+
+const updateGameRoomsInfo = (callbackFunction, roomId) => {
+    redisInstance.hincrby(`groom:${roomId}`, 'noUsers', 1);
+    redisInstance.hgetall(`groom:${roomId}`, (err, result) => {
+        if (!err) {
+            if (result.noUsers >= 5) {
+                redisInstance.srem(GROOMS_PENDING, roomId);
+                redisInstance.del(`groom:${roomId}`, (err, result) => {
+                    if (!err) {
+                        console.log('Room Deleted Max count met...', result);
+                        callbackFunction();
+                    } else {
+                        console.log(err);
+                    }
+                });
+            }
         }
     });
 };
 
 module.exports = { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsersAndPendingGameRoomRequests,
-    storeNewGameRoomRequest, getAllPendingGameRooms };
+    storeNewGameRoomRequest, getAllPendingGameRooms, updateGameRoomsInfo };

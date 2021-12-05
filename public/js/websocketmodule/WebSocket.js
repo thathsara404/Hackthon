@@ -3,7 +3,8 @@
 import io from 'socket.io-client';
 import { store } from '../redux/store';
 import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
-    UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO } from '../redux/action/gameRoomAction';
+    UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO
+} from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
 
 export class WebSocket {
@@ -57,6 +58,12 @@ export class WebSocket {
                     store.dispatch({ type: UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
                         payload: gameRoomsInfo });
                     break;
+                case WebSocketAction.GAME_ROOM_UPDATE: 
+                    store.dispatch({ type: UPDATE_PENDING_GAME_ROOM_REQUESTS,
+                        payload: allPendingGameRequest });
+                    store.dispatch({ type: UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
+                        payload: gameRoomsInfo });
+                    break;
                 default:
                     break;
             }
@@ -66,10 +73,15 @@ export class WebSocket {
     } 
 
     static createNewGameRoom (roomId, roomName, userId) {
-        this.socket.emit('message', { 'roomId': roomId, 'roomName': roomName, 'userId': userId });
+        this.socket.emit('message', { 'roomId': roomId, 'roomName': roomName,
+            'userId': userId, 'requestType': 'CREATE_GAME' });
     }
 
-    static joindNewGameRoom (roomName) {
+    static joindNewGameRoom (roomId, userId) {
+        this.socket.emit('message', { 'roomId': roomId, 'userId': userId, 'requestType': 'JOIN_GAME' });
+    }
+
+    static reserGameRoom () {
 
     }
 

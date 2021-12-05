@@ -1,12 +1,19 @@
 'use strict';
 
 const { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsersAndPendingGameRoomRequests,
-    storeNewGameRoomRequest, getAllPendingGameRooms } = require('./app/data/util/redisGameRoomUtil');
+    storeNewGameRoomRequest, getAllPendingGameRooms,
+    updateGameRoomsInfo } = require('./app/data/util/redisGameRoomUtil');
 
 const MessageTypes = {
     USER_CONNECTED: 'USER_CONNECTED',
     USER_DISCONNECTED: 'USER_DISCONNECTED',
-    NEW_GAME_ROOM_REQUEST: 'NEW_GAME_ROOM_REQUEST'
+    NEW_GAME_ROOM_REQUEST: 'NEW_GAME_ROOM_REQUEST',
+    GAME_ROOM_UPDATE: 'GAME_ROOM_UPDATE'
+};
+
+const gameRequestTypes = {
+    CREATE_GAME: 'CREATE_GAME',
+    JOIN_GAME: 'JOIN_GAME'
 };
 
 const gameRoomServer = (server) => {
@@ -37,19 +44,37 @@ const gameRoomServer = (server) => {
 
         // Retrieve gameSpace messages (new Game Room Requests) and braodcast among others
         socket.on('message', (data) => {
-            console.log(`Room: ${data.room}`);
+            const requestType = data.requestType;
             // GameRoom.in(data.room).emit('message', { 'messageType': MessageTypes.NEW_GAME_ROOM_REQUEST });
 
-            const items = { 'roomId': data.roomId, 'roomName': data.roomName,
-                'createdByUserId': data.userId };
-            console.log('New Game Request: ', items);
-            storeNewGameRoomRequest({ 'roomId': data.roomId, 'roomName': data.roomName,
-                'createdByUserId': data.userId });
+            switch (requestType) {
+                case gameRequestTypes.CREATE_GAME: {
+                    const items = { 'roomId': data.roomId, 'roomName': data.roomName,
+                        'createdByUserId': data.userId };
+                    console.log('New Game Request: ', items);
+                    storeNewGameRoomRequest({ 'roomId': data.roomId, 'roomName': data.roomName,
+                        'createdByUserId': data.userId });
 
-            getAllPendingGameRooms((allPendingGameRequest) => {
-                gameRoom.emit('message', { 'messageType': MessageTypes.NEW_GAME_ROOM_REQUEST,
-                    'allPendingGameRoomRequests': allPendingGameRequest });
-            });
+                    getAllPendingGameRooms((allPendingGameRequest, gameRoomsInfo) => {
+                        gameRoom.emit('message', { 'messageType': MessageTypes.NEW_GAME_ROOM_REQUEST,
+                            'allPendingGameRoomRequests': allPendingGameRequest, 'gameRoomsInfo': gameRoomsInfo });
+                    });
+                }
+                    break;
+                case gameRequestTypes.JOIN_GAME: {
+                    const items = { 'roomId': data.roomId, 'userId': data.userId };
+                    console.log('Join Game Request: ', items);
+                    updateGameRoomsInfo(() => {
+                        getAllPendingGameRooms((allPendingGameRequest, gameRoomsInfo) => {
+                            gameRoom.emit('message', { 'messageType': MessageTypes.GAME_ROOM_UPDATE,
+                                'allPendingGameRoomRequests': allPendingGameRequest, 'gameRoomsInfo': gameRoomsInfo });
+                        });
+                    }, data.roomId);
+                }
+                    break;
+                default:
+                    break;
+            }
         });
 
         // Track disconnected users
