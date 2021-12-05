@@ -81,7 +81,7 @@ export class WebSocket {
 
     static joindNewGameRoom (roomId, userId) {
 
-        // Update Redux Status for the user indicating the user in a sub room
+        // Update Redux Status: indicating the user in a sub room
         store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
             payload: true });
 
@@ -108,6 +108,14 @@ export class WebSocket {
                 case WebSocketAction.START_GAME:
                     store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
                         payload: true });
+                    break;
+                case WebSocketAction.FINISH_GAME:
+                    store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
+                        payload: false });
+                    store.dispatch({ type: UPDATE_CURRENT_SUBROOM_ID,
+                        payload: null });
+                    store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
+                        payload: false });
                     break;
                 default:
                     break;

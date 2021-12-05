@@ -8,6 +8,11 @@ const redisInstance = require('../connector/redisConnector');
 const { USERS_LIVE, GROOMS_PENDING } = require('../../const/redisKeys');
 const config = require('../../config/config'); 
 
+const MessageTypes = {
+    FINISH_GAME: 'FINISH_GAME',
+    QUESTION: 'QUESTION'
+};
+
 const storeNewJoiner = (newJoinerID, newJoinerUsername) => {
     // Store connected user detail in a Hash
     redisInstance.hmset(`user:${newJoinerID}`, 'userName', newJoinerUsername);
@@ -116,8 +121,11 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
         count = count + 1;
         if (count === config.QUESTION_SETTINGS.NUM_OF_QUESTIONS_PER_GAME) {
             clearInterval(intervalID);
+            gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.FINISH_GAME });
         }
-        gameRoom.in(gameSubRoom).emit('message', { 'messageType': 'Send Question No: ' });
+        // TODO: Here call the question DB service and get questions from the Mongo DB
+        gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.QUESTION,
+            'QestionTemplate': '<html></html>' });
     }, config.QUESTION_SETTINGS.QUESTION_TIMEOUT);
 };
 
