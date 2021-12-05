@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { WebSocket } from '../js/websocketmodule/WebSocket';
 import { useSelector } from 'react-redux';
+import UUID from 'uuid';
 import { getGameRoomConnectedStatus, getNewGameRequests,
     getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom,
     getCurrentGameRoomId, getGameStartedStatus } from '../js/redux/selector/gameRoomSelector';
-import { DEFAULT_ROOM_NAME } from './const/chatRoomConst';
+import { DEFAULT_SOCKET_ROOM } from '../../app/config/config';
 
 const GameRoom = ( { title }) => {
 
@@ -21,13 +22,13 @@ const GameRoom = ( { title }) => {
         // Connect to Game
         if (!isGameRoomConnected) {
             // TODO: Pass the correct User data
-            WebSocket.connect('gameSpace', 'thathsara', Math.floor((Math.random() * 100) + 1));
+            WebSocket.connect(DEFAULT_SOCKET_ROOM, 'thathsara', Math.floor((Math.random() * 100) + 1));
         }
     });
 
     const sendNewGameRoomRequest = () => {
         // TODO: Plan a good way to generate game room values
-        WebSocket.createNewGameRoom('0001', 'beatme', '1000001');
+        WebSocket.createNewGameRoom(UUID.v4(), 'beatme', '1000001');
     };
 
     const joinGame = () => {

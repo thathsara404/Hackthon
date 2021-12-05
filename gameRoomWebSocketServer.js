@@ -1,7 +1,7 @@
 'use strict';
 
 const { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsersAndPendingGameRoomRequests,
-    storeNewGameRoomRequest, getAllPendingGameRooms,
+    storeNewGameRoomRequest, getAllPendingGameRooms, sendQuestionsToTheGameRoom,
     updateGameRoomsInfo } = require('./app/data/util/redisGameRoomUtil');
 
 const MessageTypes = {
@@ -75,7 +75,6 @@ const gameRoomServer = (server) => {
         // Retrieve gameSpace messages (new Game Room Requests) and braodcast among others
         socket.on('message', (data) => {
             const requestType = data.requestType;
-            // GameRoom.in(data.room).emit('message', { 'messageType': MessageTypes.NEW_GAME_ROOM_REQUEST });
 
             switch (requestType) {
                 case gameRequestTypes.CREATE_GAME: {
@@ -101,13 +100,14 @@ const gameRoomServer = (server) => {
                         });
                     }, (room) => {
                         gameRoom.in(room).emit('message', { 'messageType': MessageTypes.START_GAME });
-                    }, data.roomId);
+                    }, (gameRoom, room) => {
+                        sendQuestionsToTheGameRoom(gameRoom, room);
+                    }, data.roomId, gameRoom);
                 }
                     break;
                 case 'NEW_ROOM': {
                     console.log('NEW ROOM JOINER: ', data);
-                    gameRoom.in(data.room).emit('message', { 'messageType': 'SUB_ROOM',
-                        'allPendingGameRoomRequests': 10000, 'gameRoomsInfo': '5555555555555' });
+                    gameRoom.in(data.room).emit('message', { 'messageType': 'SUB_ROOM' });
                 }
                     break;
                 default:

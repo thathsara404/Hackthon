@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { store } from '../redux/store';
 import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
     UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
-    UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS
+    UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID
 } from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
 
@@ -84,6 +84,10 @@ export class WebSocket {
         // Update Redux Status for the user indicating the user in a sub room
         store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
             payload: true });
+
+        // Update Reducx Status with the current sub room Id
+        store.dispatch({ type: UPDATE_CURRENT_SUBROOM_ID,
+            payload: roomId });
 
         const tstmainRoom = 'gameSpace';
         const newRoomSocket = this.socket = io(`/${tstmainRoom}`);

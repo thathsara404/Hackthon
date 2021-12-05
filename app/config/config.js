@@ -35,7 +35,12 @@ const config = {
         RESAVE: process.env.SESSION_RESAVE || false,
         // With every backend request, session timeout will be updated
         ROLLING: process.env.ROLLING || true
-    }
+    },
+    QUESTION_SETTINGS: {
+        NUM_OF_QUESTIONS_PER_GAME: process.env.NUM_OF_QUESTIONS_PER_GAME || 10,
+        QUESTION_TIMEOUT: process.env.QUESTION_TIMEOUT || 3000
+    },
+    DEFAULT_SOCKET_ROOM: process.env.DEFAULT_SOCKET_ROOM || 'gameSpace'
 };
 
 module.exports = config;

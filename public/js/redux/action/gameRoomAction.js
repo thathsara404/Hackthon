@@ -7,6 +7,7 @@ export const UPDATE_PENDING_GAME_ROOM_REQUESTS = 'UPDATE_PENDING_GAME_ROOM_REQUE
 export const UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO = 'UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO';
 export const UPDATE_USER_STATUS_IN_SUB_ROOM = 'UPDATE_USER_IN_SUB_ROOM'; 
 export const UPDATE_NEW_GAME_STARTED_STATUS = 'UPDATE_NEW_GAME_STARTED_STATUS';
+export const UPDATE_CURRENT_SUBROOM_ID = 'UPDATE_CURRENT_SUBROOM_ID';
 
 export const updateLiveUsers = users => ({
     type: UPDATE_LIVE_USERS,
@@ -41,4 +42,9 @@ export const updateUserInSubRoomStatus = isJoinedSubRoom => ({
 export const updateNewGameStartedStatus = isGameStarted => ({
     type: UPDATE_USER_STATUS_IN_SUB_ROOM,
     payload: { isGameStarted }
+});
+
+export const updateCurrentSubRoomId = subRoomId => ({
+    type: UPDATE_CURRENT_SUBROOM_ID,
+    payload: { subRoomId }
 });

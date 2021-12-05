@@ -6,6 +6,7 @@
 
 const redisInstance = require('../connector/redisConnector');
 const { USERS_LIVE, GROOMS_PENDING } = require('../../const/redisKeys');
+const config = require('../../config/config'); 
 
 const storeNewJoiner = (newJoinerID, newJoinerUsername) => {
     // Store connected user detail in a Hash
@@ -87,7 +88,8 @@ const getAllPendingGameRooms = (callbackFunction) => {
     });
 };
 
-const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, roomId) => {
+const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, callbackFunctionSendQuestions,
+    roomId, gameRoom) => {
     redisInstance.hincrby(`groom:${roomId}`, 'noUsers', 1);
     redisInstance.hgetall(`groom:${roomId}`, (err, result) => {
         if (!err) {
@@ -98,6 +100,7 @@ const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, roomId
                         console.log('Room Deleted Max count met...', result);
                         callbackFunction();
                         callbackFunctionStartGame(roomId);
+                        callbackFunctionSendQuestions(gameRoom, roomId);
                     } else {
                         console.log(err);
                     }
@@ -107,5 +110,16 @@ const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, roomId
     });
 };
 
+const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
+    let count = 0;
+    const intervalID = setInterval(() => {
+        count = count + 1;
+        if (count === config.QUESTION_SETTINGS.NUM_OF_QUESTIONS_PER_GAME) {
+            clearInterval(intervalID);
+        }
+        gameRoom.in(gameSubRoom).emit('message', { 'messageType': 'Send Question No: ' });
+    }, config.QUESTION_SETTINGS.QUESTION_TIMEOUT);
+};
+
 module.exports = { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsersAndPendingGameRoomRequests,
-    storeNewGameRoomRequest, getAllPendingGameRooms, updateGameRoomsInfo };
+    storeNewGameRoomRequest, getAllPendingGameRooms, updateGameRoomsInfo, sendQuestionsToTheGameRoom };
