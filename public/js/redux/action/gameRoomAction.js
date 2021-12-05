@@ -5,6 +5,7 @@ export const UPDATE_LIVE_USERS_INFO = 'UPDATE_LIVE_USERS_INFO';
 export const USER_CONNECTED = 'USER_CONNECTED';
 export const UPDATE_PENDING_GAME_ROOM_REQUESTS = 'UPDATE_PENDING_GAME_ROOM_REQUESTS';
 export const UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO = 'UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO';
+export const UPDATE_USER_STATUS_IN_SUB_ROOM = 'UPDATE_USER_IN_SUB_ROOM'; 
 
 export const updateLiveUsers = users => ({
     type: UPDATE_LIVE_USERS,
@@ -29,4 +30,9 @@ export const updatePendingGameRoomRequests = requests => ({
 export const updatePendingGameRoomRequestsInfo = requests => ({
     type: UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
     payload: { requests }
+});
+
+export const updateUserInSubRoomStatus = isJoinedSubRoom => ({
+    type: UPDATE_USER_STATUS_IN_SUB_ROOM,
+    payload: { isJoinedSubRoom }
 });

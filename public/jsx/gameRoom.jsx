@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { WebSocket } from '../js/websocketmodule/WebSocket';
 import { useSelector } from 'react-redux';
 import { getGameRoomConnectedStatus, getNewGameRequests,
-    getCurrentGameRequestJoinedUserCount } from '../js/redux/selector/gameRoomSelector';
+    getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom } from '../js/redux/selector/gameRoomSelector';
+import { DEFAULT_ROOM_NAME } from './const/chatRoomConst';
 
 const GameRoom = ( { title }) => {
 
     const isGameRoomConnected = useSelector(state => getGameRoomConnectedStatus(state));
     const pendingGameRequests = useSelector(state => getNewGameRequests(state));
     const pendingRequestUserCount = useSelector(state => getCurrentGameRequestJoinedUserCount(state));
+    const userJoinedStatusInSubRoom = useSelector(state => getUserJoinedStatusInSubRoom(state));
 
     useEffect(() => {
         document.title = title;
@@ -29,12 +31,26 @@ const GameRoom = ( { title }) => {
         WebSocket.joindNewGameRoom('0001', '1000001');
     };
 
+    const Content = () => {
+        if (userJoinedStatusInSubRoom) {
+            // Handle sub room question rendering...
+            return (<h1>Let the game begin ...</h1>);
+        } 
+        // Game Room
+        if (pendingGameRequests.length === 0) {
+            return (<button onClick={sendNewGameRoomRequest}>Create New Game</button>);
+
+        } else if (pendingGameRequests.length === 1 && pendingRequestUserCount <= 5) {
+            return (<button onClick={joinGame}>
+                {`Join Game ${pendingGameRequests[0]}`}</button>);
+        } 
+        return (<h1>Loading ....</h1>);
+        
+    };
+
     return (
         <>
-            <h1>Game Room</h1>
-            {pendingGameRequests.length === 0 && <button onClick={sendNewGameRoomRequest}>Create New Game</button>}
-            {pendingGameRequests.length === 1 && pendingRequestUserCount <= 5 && <button onClick={joinGame}>
-                {`Join Game ${pendingGameRequests[0]}`}</button>}
+            <Content />
         </>
     );
     
