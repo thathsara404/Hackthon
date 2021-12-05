@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * This module is the Redis Repository for the Game Room 
+ */
+
 const redisInstance = require('../connector/redisConnector');
 const { USERS_LIVE, GROOMS_PENDING } = require('../../const/redisKeys');
 
@@ -20,12 +24,38 @@ const removeDisconnectedUser = (userID) => {
     });
 };
 
+// Find all info relevant for the Game Room
+const findGameRoomsInfoAndUsersInfo = (callback, allLiveUsers, allPendingRooms) => {
+    const roomInfoProcess = allPendingRooms.map(roomId => {
+        return redisInstance.hgetall(`groom:${roomId}`, (err, result) => {
+            if (!err) {
+                result.gameRoomId = roomId;
+                return result;
+            }
+        });
+    });
+    Promise.all(roomInfoProcess).then( (roomsInfoResult) => {
+        const userInfoProcess = allLiveUsers.map(userId => {
+            return redisInstance.hgetall(`user:${userId}`, (err, result) => {
+                if (!err) {
+                    result.userId = userId;
+                    return result;
+                }
+            });
+        });
+        Promise.all(userInfoProcess).then( (usersInfoResult) => {
+            callback(allLiveUsers, allPendingRooms, roomsInfoResult, usersInfoResult);
+        });
+    }
+    );
+};
+
 const getAllConnectedUsersAndPendingGameRoomRequests = (callbackFunction) => {
     redisInstance.smembers(USERS_LIVE, (err, allLiveUsers) => {
         if (!err) {
             redisInstance.smembers(GROOMS_PENDING, (err, allPendingRooms) => {
                 if (!err) {
-                    callbackFunction(allLiveUsers, allPendingRooms);
+                    findGameRoomsInfoAndUsersInfo(callbackFunction, allLiveUsers, allPendingRooms);
                 }
             });
         }

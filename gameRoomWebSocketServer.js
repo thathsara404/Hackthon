@@ -26,10 +26,12 @@ const gameRoomServer = (server) => {
             storeNewJoiner(newJoinerID, newJoinerUsername);
             console.log('roomName: ' + data.room + 'UN: ' + newJoinerUsername, 'userID: ' + data.userId);
             // Send most recent live users to all
-            getAllConnectedUsersAndPendingGameRoomRequests((allUserIds, allPendingGameRequest) => {
+            getAllConnectedUsersAndPendingGameRoomRequests((allUserIds, allPendingGameRequest,
+                gameRoomsInfo, usersInfo) => {
                 gameRoom.in(data.room).emit('message', { 'messageType': MessageTypes.USER_CONNECTED,
                     'userName': data.userName, 'userID': data.userId, 'allUserIds': allUserIds, 
-                    'allPendingGameRoomRequests': allPendingGameRequest });
+                    'allPendingGameRoomRequests': allPendingGameRequest,
+                    'gameRoomsInfo': gameRoomsInfo, 'usersInfo': usersInfo });
             });
         });
 
@@ -40,7 +42,7 @@ const gameRoomServer = (server) => {
 
             const items = { 'roomId': data.roomId, 'roomName': data.roomName,
                 'createdByUserId': data.userId };
-            console.log('IIIII', items);
+            console.log('New Game Request: ', items);
             storeNewGameRoomRequest({ 'roomId': data.roomId, 'roomName': data.roomName,
                 'createdByUserId': data.userId });
 
@@ -53,13 +55,15 @@ const gameRoomServer = (server) => {
         // Track disconnected users
         socket.on('disconnect', () => {
             const disconnectedUserId = socket.userId;
-            console.log('user disconnected: ', disconnectedUserId);
+            console.log('User Disconnected: ', disconnectedUserId);
             removeDisconnectedUser(disconnectedUserId);
             // Send all live users
-            getAllConnectedUsersAndPendingGameRoomRequests((allUserIds, allPendingGameRequest) => {
+            getAllConnectedUsersAndPendingGameRoomRequests((allUserIds, allPendingGameRequest,
+                gameRoomsInfo, usersInfo) => {
                 gameRoom.emit('message', { 'messageType': MessageTypes.USER_DISCONNECTED,
                     'disconnectedUserId': disconnectedUserId, 'allUserIds': allUserIds,
-                    'allPendingGameRoomRequests': allPendingGameRequest });
+                    'allPendingGameRoomRequests': allPendingGameRequest,
+                    'gameRoomsInfo': gameRoomsInfo, 'usersInfo': usersInfo });
             });
         });
 

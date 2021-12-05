@@ -16,7 +16,7 @@ This is the documentation for "Learn to Earn - WEL" Hackathon Project
 
 # Steps to run
 - Setup a Mongo database with the information in the config.js file
-- Insatall Redis on your machine and start ther redis server (for windows users: https://github.com/microsoftarchive/redis/releases/latest). 
+- Insatall Redis on your machine and start the redis server (for windows users: https://github.com/microsoftarchive/redis/releases/latest or try redisinsight). 
 - npm install : install dependencies
 - npm run dev : will start the app (development mode)
 - Login has been mocked. Try http://localhost:1223/api/login. It will give you the UI entry point.

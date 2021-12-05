@@ -1,11 +1,15 @@
 'use strict';
 
-import { UPDATE_LIVE_USERS, USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS } from '../action/gameRoomAction';
+import { UPDATE_LIVE_USERS, UPDATE_LIVE_USERS_INFO, USER_CONNECTED,
+    UPDATE_PENDING_GAME_ROOM_REQUESTS,
+    UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO } from '../action/gameRoomAction';
 
 const initialState = {
     liveUsers: [],
+    liveUsersInfo: [],
     userConnected: false,
-    pendingGameRequests: []
+    pendingGameRequests: [],
+    pendingGameRequestsInfo: []
 };
 
 export const gameRoom = (state = initialState, action) => {
@@ -17,12 +21,18 @@ export const gameRoom = (state = initialState, action) => {
             // TODO: makesure no duplicate
             return { ...state, liveUsers: [payload] };
         }
+        case UPDATE_LIVE_USERS_INFO: {
+            return { ...state, liveUsersInfo: payload };
+        }
         case USER_CONNECTED: {
             return { ...state, userConnected: payload };
         }
         case UPDATE_PENDING_GAME_ROOM_REQUESTS: {
             // TODO: Change this logic when multiple game requests are allowed
             return { ...state, pendingGameRequests: payload };
+        }
+        case UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO: {
+            return { ...state, pendingGameRequestsInfo: payload };
         }
         default: {
             return state;

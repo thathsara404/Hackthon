@@ -13,12 +13,18 @@ const GameRoom = ( { title }) => {
         document.title = title;
         // Connect to Game
         if (!isGameRoomConnected) {
+            // TODO: Pass the correct User data
             WebSocket.connect('gameSpace', 'thathsara', Math.floor((Math.random() * 100) + 1));
         }
     });
 
     const sendNewGameRoomRequest = () => {
+        // TODO: Plan a good way to generate game room values
         WebSocket.createNewGameRoom('0001', 'beatme', '1000001');
+    };
+
+    const joinGame = () => {
+        
     };
 
     return (
