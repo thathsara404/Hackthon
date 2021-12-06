@@ -4,7 +4,8 @@ import io from 'socket.io-client';
 import { store } from '../redux/store';
 import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
     UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
-    UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID
+    UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID,
+    UPDATE_CURRENT_QUESTION
 } from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
 import config from '../../../app/config/config';
@@ -104,6 +105,7 @@ export class WebSocket {
         newRoomSocket.on('message', (message) => {
             console.log('Message From New Game Room: ', message);
             const messageType = message.messageType;
+            const questionTemplate = message.qestionTemplate;
             switch (messageType) {
                 case WebSocketAction.START_GAME:
                     store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
@@ -116,6 +118,12 @@ export class WebSocket {
                         payload: null });
                     store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
                         payload: false });
+                    store.dispatch({ type: UPDATE_CURRENT_QUESTION,
+                        payload: null });
+                    break;
+                case WebSocketAction.QUESTION:
+                    store.dispatch({ type: UPDATE_CURRENT_QUESTION,
+                        payload: questionTemplate });
                     break;
                 default:
                     break;

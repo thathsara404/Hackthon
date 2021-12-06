@@ -12,3 +12,5 @@ export const getCurrentGameRoomId = state => state.gameRoom?.pendingGameRequests
 
 export const getGameStartedStatus = state => state.gameRoom?.newGameStarted;
 
+export const getCurrentQuestion = state => state.gameRoom?.currentQuestion;
+

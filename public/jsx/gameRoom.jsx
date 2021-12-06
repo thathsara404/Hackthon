@@ -7,6 +7,7 @@ import { getGameRoomConnectedStatus, getNewGameRequests,
     getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom,
     getCurrentGameRoomId, getGameStartedStatus } from '../js/redux/selector/gameRoomSelector';
 import { DEFAULT_SOCKET_ROOM } from '../../app/config/config';
+import QuestionLoader from './questionLoader';
 
 const GameRoom = ( { title }) => {
 
@@ -27,8 +28,11 @@ const GameRoom = ( { title }) => {
     });
 
     const sendNewGameRoomRequest = () => {
-        // TODO: Plan a good way to generate game room values
-        WebSocket.createNewGameRoom(UUID.v4(), 'beatme', '1000001');
+        // TODO: Get the couse Id from user info (that should be available in the redux store under user info)
+        const courseId = '00001';
+        const courseName = 'Brain Science';
+        const userId = '1000001';
+        WebSocket.createNewGameRoom(`${ UUID.v4()}-$-${courseId}`, courseName, userId);
     };
 
     const joinGame = () => {
@@ -39,7 +43,12 @@ const GameRoom = ( { title }) => {
         if (userJoinedStatusInSubRoom) {
             // Handle sub room question rendering...
             if (gameStartedStatus) {
-                return (<h1>Game Started ...</h1>);
+                return (
+                    <>
+                        <h1>Game Started ...</h1>
+                        <QuestionLoader/>
+                    </>
+                );
             }
             return (<h1>Let the game begin ...</h1>);
         } 

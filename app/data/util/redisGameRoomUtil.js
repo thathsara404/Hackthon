@@ -127,9 +127,18 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
                 gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.FINISH_GAME });
             }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_END_GAME_MESSAGE);
         }
-        // TODO: Here call the question DB service and get questions from the Mongo DB
+        /*
+         * TODO: Here call the question DB service and get questions from the Mongo DB
+         * (use course id. get it from the room id)
+         */
+        const question = `<input type="radio" id="html" name="fav_language" value="HTML">
+        <label for="html">HTML</label><br>
+        <input type="radio" id="css" name="fav_language" value="CSS">
+        <label for="css">CSS</label><br>
+        <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+        <label for="javascript">JavaScript</label>`;
         gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.QUESTION,
-            'QestionTemplate': '<html></html>' });
+            'qestionTemplate': question });
     }, config.QUESTION_SETTINGS.QUESTION_TIMEOUT);
 };
 

@@ -3,7 +3,8 @@
 import { UPDATE_LIVE_USERS, UPDATE_LIVE_USERS_INFO, USER_CONNECTED,
     UPDATE_PENDING_GAME_ROOM_REQUESTS,
     UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO, UPDATE_USER_STATUS_IN_SUB_ROOM,
-    UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID } from '../action/gameRoomAction';
+    UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID,
+    UPDATE_CURRENT_QUESTION } from '../action/gameRoomAction';
 
 const initialState = {
     liveUsers: [],
@@ -13,7 +14,8 @@ const initialState = {
     pendingGameRequestsInfo: [],
     subRoomStatus: false,
     newGameStarted: false,
-    currentSubRoomId: null
+    currentSubRoomId: null,
+    currentQuestion: null
 };
 
 export const gameRoom = (state = initialState, action) => {
@@ -46,6 +48,9 @@ export const gameRoom = (state = initialState, action) => {
         }
         case UPDATE_CURRENT_SUBROOM_ID: {
             return { ...state, currentSubRoomId: payload };
+        }
+        case UPDATE_CURRENT_QUESTION: {
+            return { ...state, currentQuestion: payload };
         }
         default: {
             return state;
