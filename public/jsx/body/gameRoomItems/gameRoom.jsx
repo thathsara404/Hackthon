@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { WebSocket } from '../js/websocketmodule/WebSocket';
+import { WebSocket } from '../../../js/websocketmodule/WebSocket';
 import { useSelector } from 'react-redux';
 import UUID from 'uuid';
 import { getGameRoomConnectedStatus, getNewGameRequests,
     getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom,
-    getCurrentGameRoomId, getGameStartedStatus } from '../js/redux/selector/gameRoomSelector';
-import { DEFAULT_SOCKET_ROOM } from '../../app/config/config';
+    getCurrentGameRoomId, getGameStartedStatus } from '../../../js/redux/selector/gameRoomSelector';
+import { DEFAULT_SOCKET_ROOM } from '../../../../app/config/config';
 import QuestionLoader from './questionLoader';
 
 const GameRoom = ( { title }) => {

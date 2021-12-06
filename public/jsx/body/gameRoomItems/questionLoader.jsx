@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getCurrentQuestion } from '../js/redux/selector/gameRoomSelector';
+import { getCurrentQuestion } from '../../../js/redux/selector/gameRoomSelector';
 
 const QuestionLoader = () => {
 

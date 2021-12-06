@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-import GameRoom from './gameRoom';
-import Home from './home';
 import { validateLogin } from '../js/redux/thunk/userThunk';
 import { getUserLoginStatus } from '../js/redux/selector/userSelector';
+import Container from '@mui/material/Container';
+import GamePanel from './body/gamePanel';
+import GameHeader from './header/gameHeader';
 
 class MainRouter extends React.Component {
 
@@ -25,8 +24,12 @@ class MainRouter extends React.Component {
     render () {
         const isUserSignedIn = this.props.isLoggedIn;
         return <>
-
-            {this.props.isLoggedIn && <h2>User has Signed In</h2>}
+            <Container maxWidth='lg'>
+                <GameHeader />
+                <GamePanel />
+            </Container>
+            
+            {/* {this.props.isLoggedIn && <h2>User has Signed In</h2>}
             {!this.props.isLoggedIn && <h2>User has not Signed In</h2>}
 
             {
@@ -40,7 +43,7 @@ class MainRouter extends React.Component {
                         <Route path='/' component={() => <Home title={'Score Board'}/>}></Route>
                     </Switch>
                 </Router>
-            }
+            } */}
         </>;
     }
 
