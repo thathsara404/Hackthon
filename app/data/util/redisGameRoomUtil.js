@@ -104,7 +104,9 @@ const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, callba
                     if (!err) {
                         console.log('Room Deleted Max count met...', result);
                         callbackFunction();
-                        callbackFunctionStartGame(roomId);
+                        setTimeout(() => {
+                            callbackFunctionStartGame(roomId);
+                        }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_START_GAME_MESSAGE);
                         callbackFunctionSendQuestions(gameRoom, roomId);
                     } else {
                         console.log(err);
@@ -121,7 +123,9 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
         count = count + 1;
         if (count === config.QUESTION_SETTINGS.NUM_OF_QUESTIONS_PER_GAME) {
             clearInterval(intervalID);
-            gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.FINISH_GAME });
+            setTimeout(() => {
+                gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.FINISH_GAME });
+            }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_END_GAME_MESSAGE);
         }
         // TODO: Here call the question DB service and get questions from the Mongo DB
         gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.QUESTION,

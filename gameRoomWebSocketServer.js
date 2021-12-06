@@ -4,6 +4,8 @@ const { storeNewJoiner, removeDisconnectedUser, getAllConnectedUsersAndPendingGa
     storeNewGameRoomRequest, getAllPendingGameRooms, sendQuestionsToTheGameRoom,
     updateGameRoomsInfo } = require('./app/data/util/redisGameRoomUtil');
 
+const config = require('./app/config/config');
+
 const MessageTypes = {
     // When new user etered to the main room (game room tab first click)
     USER_CONNECTED: 'USER_CONNECTED',
@@ -34,7 +36,7 @@ const gameRoomServer = (server) => {
     // Game-Room Web-Socket
     const io = require('socket.io')(server);
 
-    const gameRoom = io.of('/gameSpace');
+    const gameRoom = io.of(`/${config.DEFAULT_SOCKET_ROOM}`);
     gameRoom.on('connection', (socket) => {
 
         // Join new users to the gameSpace

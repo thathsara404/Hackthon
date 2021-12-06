@@ -7,6 +7,7 @@ import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
     UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID
 } from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
+import config from '../../../app/config/config';
 
 export class WebSocket {
 
@@ -89,8 +90,7 @@ export class WebSocket {
         store.dispatch({ type: UPDATE_CURRENT_SUBROOM_ID,
             payload: roomId });
 
-        const tstmainRoom = 'gameSpace';
-        const newRoomSocket = this.socket = io(`/${tstmainRoom}`);
+        const newRoomSocket = this.socket = io(`/${config.DEFAULT_SOCKET_ROOM}`);
         newRoomSocket.emit('message', { 'roomId': roomId, 'userId': userId, 'requestType': 'JOIN_GAME' });
 
         newRoomSocket.on('connect', () => {
