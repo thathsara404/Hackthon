@@ -16,7 +16,7 @@ export default function Buttonpanel () {
          * <Box sx={{ position: 'absolute', bottom: 50, disply: 'fex', flexDirection: 'row' }}>
          * </Box>
          */
-        <Stack spacing={2} direction='row' sx={{ position: 'absolute', bottom: 50 }}>
+        <Stack spacing={2} direction='row' sx={{ position: 'absolute', bottom: 30 }}>
             <Button className={classes.customButton} variant='contained'>Create</Button>
             <Button className={classes.customButton} variant='contained'>Join</Button>
         </Stack>
