@@ -14,3 +14,5 @@ export const getGameStartedStatus = state => state.gameRoom?.newGameStarted;
 
 export const getCurrentQuestion = state => state.gameRoom?.currentQuestion;
 
+export const getLiveUsersInfo = state => state.gameRoom?.liveUsersInfo;
+

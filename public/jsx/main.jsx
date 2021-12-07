@@ -3,9 +3,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { validateLogin } from '../js/redux/thunk/userThunk';
 import { getUserLoginStatus } from '../js/redux/selector/userSelector';
+import { getUserJoinedStatusInSubRoom } from '../js/redux/selector/gameRoomSelector';
 import Container from '@mui/material/Container';
 import GamePanel from './body/gamePanel';
 import GameHeader from './header/gameHeader';
+import Notifier from './body/notifier/notifier';
+import Spinner from './body/spinner/spinner';
+import MessageDialog from './body/dialog/dialog';
+import SupportCard from './body/contactSupport/supportCard';
+import QuestionLoaderDialog from './body/gameRoomItems/questionLoaderDIalog';
 
 class MainRouter extends React.Component {
 
@@ -23,27 +29,31 @@ class MainRouter extends React.Component {
 
     render () {
         const isUserSignedIn = this.props.isLoggedIn;
+        const isUserConnectedToGame = this.props.isUserConnectedToGame;
         return <>
-            <Container maxWidth='lg'>
-                <GameHeader />
-                <GamePanel />
-            </Container>
-            
-            {/* {this.props.isLoggedIn && <h2>User has Signed In</h2>}
-            {!this.props.isLoggedIn && <h2>User has not Signed In</h2>}
-
+            {/* User authorized */}
             {
-                isUserSignedIn && <Router>
-                    <nav>
-                        <Link to='/'>Score Board</Link> <br />
-                        <Link to='/game-room'>Game Room</Link><br />
-                    </nav>
-                    <Switch>
-                        <Route path='/game-room' component={() => <GameRoom title={'Game Room'}/>}></Route>
-                        <Route path='/' component={() => <Home title={'Score Board'}/>}></Route>
-                    </Switch>
-                </Router>
-            } */}
+                isUserSignedIn && <Container maxWidth='lg'>
+                    <GameHeader />
+                    {
+                        isUserConnectedToGame && <Spinner type={'inherit'}/>
+                    }
+                    <GamePanel />
+                    <Notifier/>
+                </Container>
+            }
+
+            {/* Uer not authorized */}
+            {
+                isUserSignedIn !== null && !isUserSignedIn && <MessageDialog status={true} title={'Access Error'}
+                    message={'You are not authorized. Please contatct support.'}/>
+            }
+            {
+                isUserSignedIn !== null && !isUserSignedIn && <SupportCard/>
+            }
+
+            {/* Question Loader */}
+            <QuestionLoaderDialog/>
         </>;
     }
 
@@ -53,7 +63,8 @@ MainRouter.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    isLoggedIn: getUserLoginStatus(state)
+    isLoggedIn: getUserLoginStatus(state),
+    isUserConnectedToGame: getUserJoinedStatusInSubRoom(state)
 });
 
 const mapDispatchToProps = dispatch => {

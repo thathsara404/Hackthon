@@ -38,7 +38,7 @@ export default function Instructions () {
                     aria-controls='panel2bh-content'
                     id='panel2bh-header'
                 >
-                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Wiley Learn to Earn Concept</Typography>
+                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Learn to Earn Concept</Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
             Study well, earn crypto
                     </Typography>

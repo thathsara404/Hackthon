@@ -11,13 +11,16 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import { styled } from '@mui/material/styles';
+import { useSelector } from 'react-redux';
 import Paper from '@mui/material/Paper';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-// #9c27b0
+import { getLiveUsersInfo } from '../../../js/redux/selector/gameRoomSelector';
+
 const useStyles = makeStyles({
     root: {
         maxWidth: 300,
-        minHeight: 600
+        height: 600,
+        overflow: 'auto'
     },
     cardContent: {
         color: '#293239',
@@ -37,6 +40,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function LiveUsers () {
 
+    const liveUsers = useSelector(state => getLiveUsersInfo(state));
     // Style
     const classes = useStyles();
     
@@ -56,32 +60,19 @@ export default function LiveUsers () {
                             Live Players
                         </Typography>
                     </Item>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <AccountCircleIcon className={classes.liverUserIcon}/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary='Dasun' secondary='11:00 PM Jan 9, 2014' />
-                    </ListItem>
-                    <Divider variant='inset' component='li' />
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <AccountCircleIcon className={classes.liverUserIcon}/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary='Warun' secondary='11:00 PM Jan 9, 2014' />
-                    </ListItem>
-                    <Divider variant='inset' component='li' />
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <AccountCircleIcon className={classes.liverUserIcon}/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary='Chamath' secondary='11:00 PM Jan 9, 2014' />
-                    </ListItem>
+                    {liveUsers.map(user => {
+                        return <>
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <AccountCircleIcon className={classes.liverUserIcon}/>
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={user.userName} secondary={user.dateTime} />
+                            </ListItem>
+                            <Divider variant='inset' component='li' />
+                        </>;
+                    })}
                 </List>
             </CardContent>
         </Card>

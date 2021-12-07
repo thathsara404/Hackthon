@@ -38,6 +38,7 @@ const config = {
     },
     QUESTION_SETTINGS: {
         NUM_OF_QUESTIONS_PER_GAME: process.env.NUM_OF_QUESTIONS_PER_GAME || 10,
+        NUM_OF_USERS_PER_GAME: process.env.NUM_OF_USERS_PER_GAME || 5,
         QUESTION_TIMEOUT: process.env.QUESTION_TIMEOUT || 3000,
         TIME_OUT_VALUE_END_GAME_MESSAGE: process.env.TIME_OUT_VALUE_END_GAME_MESSAGE || 3000,
         // Should be lesser than 1 second to the TIME_OUT_VALUE_START_GAME_UI_MESSAGE

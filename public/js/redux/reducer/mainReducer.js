@@ -3,7 +3,7 @@
 import { UPDATE_LOGIN_STATUS } from '../action/mainAction';
 
 const initialState = {
-    isLoggedIn: false
+    isLoggedIn: null
 };
 
 export const main = (state = initialState, action) => {
