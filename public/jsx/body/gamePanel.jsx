@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import ScoreCard from './scorePanelItems/scoreCard';
 import ProfileCard from './scorePanelItems/profileCard';
 import LiveUsers from './gameRoomItems/liveUsers';
+import GameRoomMainContainer from './gameRoomItems/gameRoomMainContainer';
 
 const useStyles = makeStyles({
     root: {
@@ -103,9 +104,9 @@ export default function GamePanel () {
                     </Grid>
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={14}>
                         <Grid item xs={8}>
-
+                            <GameRoomMainContainer/>
                         </Grid>
                         <Grid item xs={4}>
                             <LiveUsers/>
