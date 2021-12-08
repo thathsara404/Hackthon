@@ -15,14 +15,14 @@ const useStyles = makeStyles({
         minHeight: 600
     },
     cardContent: {
-        color: '#293239',
+        color: '#1c465a',
         paddingTop: 5
     },
     itemOne: {
     },
 
     itemSecond: {
-        height: 280,
+        height: 270,
         textAlign: 'left'
     },
     subItem: {
@@ -52,30 +52,30 @@ export default function ProfileCard () {
                 image={ProfileImage}
                 alt='profile picture'
             />
-            <CardContent className={classes.cardContent}>
+            <CardContent >
                 <Item>
-                    <Typography gutterBottom variant='h5' component='div'>
+                    <Typography sx={{ color: '#1c465a' }} gutterBottom variant='h5' component='div'>
             Thathsara Raviraj
                     </Typography>
                 </Item>
                 <Item className={classes.itemSecond}>
                     <Item className={classes.subItem}>
-                        <Typography gutterBottom component='div'>
+                        <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
                         Course: Machine Learning
                         </Typography>
                     </Item>
                     <Item className={classes.subItem}>
-                        <Typography gutterBottom component='div'>
+                        <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
                         Username: tudugampal
                         </Typography>
                     </Item>
                     <Item className={classes.subItem}>
-                        <Typography gutterBottom component='div'>
+                        <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
                         Total Score: 1200
                         </Typography>
                     </Item>
                     <Item className={classes.subItem}>
-                        <Typography gutterBottom component='div'>
+                        <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
                         Final Rank: 20
                         </Typography>
                     </Item>

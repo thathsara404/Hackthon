@@ -16,3 +16,7 @@ export const getCurrentQuestion = state => state.gameRoom?.currentQuestion;
 
 export const getLiveUsersInfo = state => state.gameRoom?.liveUsersInfo;
 
+export const getCurrentQuestionCount = state => state.gameRoom?.sessionQuestionCount;
+
+export const getCurrentQuestionRemaingTime = state => state.gameRoom?.currentQuestionRemainingTime;
+

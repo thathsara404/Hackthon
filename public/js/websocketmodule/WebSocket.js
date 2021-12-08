@@ -5,7 +5,7 @@ import { store } from '../redux/store';
 import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
     UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
     UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID,
-    UPDATE_CURRENT_QUESTION
+    UPDATE_CURRENT_QUESTION, UPDATE_QUESTION_COUNT, UPDATE_QUESTION_REMAING_TIME
 } from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
 import config from '../../../app/config/config';
@@ -112,18 +112,40 @@ export class WebSocket {
                         payload: true });
                     break;
                 case WebSocketAction.FINISH_GAME:
-                    store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
-                        payload: false });
-                    store.dispatch({ type: UPDATE_CURRENT_SUBROOM_ID,
-                        payload: null });
-                    store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
-                        payload: false });
+                    // Set this to null initially, to idenify that server stopped sending questions 
                     store.dispatch({ type: UPDATE_CURRENT_QUESTION,
                         payload: null });
+                    // Give some times before closing the screen
+                    setTimeout(() => {
+                        store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
+                            payload: false });
+                        store.dispatch({ type: UPDATE_CURRENT_SUBROOM_ID,
+                            payload: null });
+                        store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
+                            payload: false });
+                        store.dispatch({ type: UPDATE_QUESTION_COUNT,
+                            payload: 0 });
+                    }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_DISPLAY_COMPLETED_GAME_MESSAGE);
+                    store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
+                        payload: false });
                     break;
                 case WebSocketAction.QUESTION:
                     store.dispatch({ type: UPDATE_CURRENT_QUESTION,
                         payload: questionTemplate });
+                    store.dispatch({ type: UPDATE_QUESTION_COUNT, payload: 1 });
+                    // Update current question remaining time
+                    (() => {
+                        let initialValue = config.QUESTION_SETTINGS.QUESTION_TIMEOUT / 1000;
+                        const intervalId = setInterval(() => {
+                            initialValue = initialValue - 1;
+                            if (initialValue >= 0) {
+                                store.dispatch({ type: UPDATE_QUESTION_REMAING_TIME, payload: initialValue });
+                            } else {
+                                clearInterval(intervalId);
+                                store.dispatch({ type: UPDATE_QUESTION_REMAING_TIME, payload: 0 });
+                            }
+                        }, 1000);
+                    })();
                     break;
                 default:
                     break;

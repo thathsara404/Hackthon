@@ -4,7 +4,7 @@ import { UPDATE_LIVE_USERS, UPDATE_LIVE_USERS_INFO, USER_CONNECTED,
     UPDATE_PENDING_GAME_ROOM_REQUESTS,
     UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO, UPDATE_USER_STATUS_IN_SUB_ROOM,
     UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID,
-    UPDATE_CURRENT_QUESTION } from '../action/gameRoomAction';
+    UPDATE_CURRENT_QUESTION, UPDATE_QUESTION_COUNT, UPDATE_QUESTION_REMAING_TIME } from '../action/gameRoomAction';
 
 const initialState = {
     liveUsers: [],
@@ -15,7 +15,9 @@ const initialState = {
     subRoomStatus: false,
     newGameStarted: false,
     currentSubRoomId: null,
-    currentQuestion: null
+    currentQuestion: null,
+    sessionQuestionCount: 0,
+    currentQuestionRemainingTime: 0
 };
 
 export const gameRoom = (state = initialState, action) => {
@@ -51,6 +53,18 @@ export const gameRoom = (state = initialState, action) => {
         }
         case UPDATE_CURRENT_QUESTION: {
             return { ...state, currentQuestion: payload };
+        }
+        case UPDATE_QUESTION_COUNT: {
+            let newQuestionCount = 0;
+            if (payload === 1) {
+                newQuestionCount = state.sessionQuestionCount + 1;
+            } else {
+                newQuestionCount = payload;
+            }
+            return { ...state, sessionQuestionCount: newQuestionCount };
+        }
+        case UPDATE_QUESTION_REMAING_TIME: {
+            return { ...state, currentQuestionRemainingTime: payload };
         }
         default: {
             return state;

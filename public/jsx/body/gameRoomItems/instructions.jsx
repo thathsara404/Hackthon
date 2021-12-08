@@ -21,14 +21,14 @@ export default function Instructions () {
                     id='panel1bh-header'
                 >
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            The goal of gaming concept
+                        About Wiley Gaming
                     </Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>Improve user interation</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>Learn and Fun</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
+                        Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+                        Aliquam eget maximus est, id dignissim quam.
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -38,16 +38,16 @@ export default function Instructions () {
                     aria-controls='panel2bh-content'
                     id='panel2bh-header'
                 >
-                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Learn to Earn Concept</Typography>
+                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Learn to Earn</Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-            Study well, earn crypto
+                        Study well, earn glory
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
-            varius pulvinar diam eros in elit. Pellentesque convallis laoreet
-            laoreet.
+                        Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
+                        varius pulvinar diam eros in elit. Pellentesque convallis laoreet
+                        laoreet.
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -58,13 +58,16 @@ export default function Instructions () {
                     id='panel3bh-header'
                 >
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            How to play
+                        How to play
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                        Read more
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-            amet egestas eros, vitae egestas augue. Duis vel est augue.
+                        Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
+                        amet egestas eros, vitae egestas augue. Duis vel est augue.
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -74,7 +77,10 @@ export default function Instructions () {
                     aria-controls='panel4bh-content'
                     id='panel4bh-header'
                 >
-                    <Typography sx={{ width: '33%', flexShrink: 0 }}>How we select a winner</Typography>
+                    <Typography sx={{ width: '33%', flexShrink: 0 }}>About the prize</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                        A cache prize
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>

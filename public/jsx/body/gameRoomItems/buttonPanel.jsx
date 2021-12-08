@@ -61,9 +61,11 @@ export default function Buttonpanel () {
             {
                 isUserConnectedToGame && !isGameStarted && 
                 <Typography gutterBottom variant='body1' component='div'>
-                    Please wait until others are joining ...
-                    ({`${pendingRequestUserCount < QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME ?
-                        pendingRequestUserCount : 'All complete'} / ${QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME}`})
+                    {`${pendingRequestUserCount <
+                        QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME ?
+                        'Please wait until others are joining ... ' + '(' + pendingRequestUserCount +
+                         '/' + QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME + ')' :
+                        'All joined. Get ready for the game ...'}`}
                 </Typography>
             }
             
