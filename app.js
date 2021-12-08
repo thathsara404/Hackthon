@@ -32,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use(config.ROUTE_PATH, require('./app/route/healthRoute'));
 app.use(config.ROUTE_PATH, require('./app/route/loginRoute'));
+app.use(config.ROUTE_PATH, require('./app/route/gameSessionRoute'));
 
 // Handle application errors
 app.use(function (err, req, res, next) {
