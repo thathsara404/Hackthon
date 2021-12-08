@@ -3,6 +3,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { useSelector } from 'react-redux';
 import UUID from 'uuid';
 import { WebSocket } from '../../../js/websocketmodule/WebSocket';
@@ -10,6 +11,17 @@ import { getNewGameRequests,
     getCurrentGameRequestJoinedUserCount,
     getCurrentGameRoomId, getUserJoinedStatusInSubRoom,
     getGameStartedStatus } from '../../../js/redux/selector/gameRoomSelector';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+
+const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: '#1c465a',
+    width: '100%'
+}));
+    
 const useStyles = makeStyles({
     customButton: {
         backgroundColor: '#1b598a',
@@ -49,26 +61,31 @@ export default function Buttonpanel () {
         <Stack spacing={2} direction='row' sx={{ paddingTop: 5 }}>
             
             {/* Create Game Button Logic*/}
-            {pendingGameRequests.length === 0 && !isGameStarted && !isUserConnectedToGame &&
-            <Button onClick={sendNewGameRoomRequest} className={classes.customButton}
-                variant='contained'>Create</Button>}
+            {pendingGameRequests.length === 0 && !isGameStarted && !isUserConnectedToGame && <Item>
+                <Button onClick={sendNewGameRoomRequest} className={classes.customButton}
+                    variant='contained'>Create</Button></Item>}
             {/* Join Game Button Logic*/}
             {
                 pendingGameRequests.length === 1 && 
                 pendingRequestUserCount <= QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME && !isUserConnectedToGame &&
-                <Button className={classes.customButton} onClick={joinGame} variant='contained'>Join</Button>
-            }
-            {
-                isUserConnectedToGame && !isGameStarted && 
-                <Typography gutterBottom variant='body1' component='div'>
-                    {`${pendingRequestUserCount <
-                        QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME ?
-                        'Please wait until others are joining ... ' + '(' + pendingRequestUserCount +
-                         '/' + QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME + ')' :
-                        'All joined. Get ready for the game ...'}`}
-                </Typography>
+                <Item><Button className={classes.customButton} onClick={joinGame} variant='contained'>Join
+                </Button></Item>
             }
             
+            {
+                isUserConnectedToGame && !isGameStarted && <><Item>
+                    <Typography gutterBottom variant='h6' component='div'>
+                        {`${pendingRequestUserCount <
+                        QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME ?
+                            'Please wait until others are joining ... ' + '[ ' + pendingRequestUserCount +
+                         ' / ' + QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME + ' ]' :
+                            'All joined. Get ready for the game ...'}`}
+                    </Typography>
+                    {[...Array(Number(pendingRequestUserCount) ? Number(pendingRequestUserCount) : 0)].
+                        map((e, i) => <PersonAddAlt1Icon sx={{ padding: 1 }} key={i}/>) }
+                </Item>
+                </>
+            }
         </Stack>
     );
 }

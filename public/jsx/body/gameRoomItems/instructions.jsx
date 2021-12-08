@@ -20,15 +20,18 @@ export default function Instructions () {
                     aria-controls='panel1bh-content'
                     id='panel1bh-header'
                 >
-                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                    <Typography variant={'body1'} sx={{ width: '33%', flexShrink: 0 }}>
                         About Wiley Gaming
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>Learn and Fun</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-                        Aliquam eget maximus est, id dignissim quam.
+                        Wiley Gaming Platform is a real time quiz room that offers rewards for its winners.
+                        Here you can compete with the same course students and maintain your rank on the Score Board.
+                        You can test your knowledge against the other students in the same course and you will be 
+                        encouraged by Wiley Gaming to learn the content more accurately.
+                        Take your time and show off yourself !.
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -40,14 +43,16 @@ export default function Instructions () {
                 >
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>Learn to Earn</Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                        Study well, earn glory
+                        Earn Crypto & Coupon Codes
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
-                        varius pulvinar diam eros in elit. Pellentesque convallis laoreet
-                        laoreet.
+                        Our gaming platform is a great place to improve your knowledge.
+                        Not only that but also we are happy to announce,
+                        you will be rewarded with a Crypto / Coupon if you become the top scorer.
+                        The system will select the highest ranked student in the Score Board weekly and
+                        will send the reward based on your preferred way.
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -66,8 +71,20 @@ export default function Instructions () {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-                        amet egestas eros, vitae egestas augue. Duis vel est augue.
+                    As you already know, first you need to log into the Wiley learning material.
+                        Then you can visit your gaming profile by clicking the Gaming Profile button.
+                        Here you have two spaces called, Score Board and Game Room.
+                        In the Score Board, you will see your profile and your ranks (Overall Rank & Last Session Rank).
+                        In the Game Room, you will see the students who are currently active and willing 
+                        to play the game.
+                        You can create a new game instance by clicking the CREATE button. Or else you
+                        can join an active game instance
+                        by clicking JOIN button.
+                        Once you successfully joined to a game instance,
+                         you and others in the instance will get the same set of questions.
+                        You have to answer the questions within the given time period.
+                        Once you complete it, the result will be on the Score Board.
+
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -77,15 +94,16 @@ export default function Instructions () {
                     aria-controls='panel4bh-content'
                     id='panel4bh-header'
                 >
-                    <Typography sx={{ width: '33%', flexShrink: 0 }}>About the prize</Typography>
+                    <Typography sx={{ width: '33%', flexShrink: 0 }}>About the award</Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                        A cache prize
+                        Select your preferred method
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-            amet egestas eros, vitae egestas augue. Duis vel est augue.
+                    You are free to select your preferred method of getting the awards.
+                    We offer two methods. They are Crypto and Coupons.
+                    You can select your preferred method while purchasing your product.
                     </Typography>
                 </AccordionDetails>
             </Accordion>

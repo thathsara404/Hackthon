@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import { getCurrentQuestion, getGameStartedStatus,
     getCurrentQuestionCount, getCurrentQuestionRemaingTime } from '../../../js/redux/selector/gameRoomSelector';
 import QuestionCard from './questionCard';
-import config from '../../../../app/config/config';
+import Animation from '../animation/animation';
+import TimeCard from './timeCard';
 
 const Transition = React.forwardRef(function Transition (props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -31,16 +32,6 @@ export default function QuestionLoaderDialog () {
         }
     });
 
-    const timer = () => {
-        let questionTime = config.QUESTION_SETTINGS.QUESTION_TIMEOUT;
-        return setInterval(() => {
-            return () => {
-                questionTime -= 1;
-                return questionTime;
-            };
-        }, questionTime);
-    };
-
     return (
         <div>
             <Dialog
@@ -48,10 +39,11 @@ export default function QuestionLoaderDialog () {
                 open={open}
                 TransitionComponent={Transition}
             >
+                {!currentQuestion && <Animation/>}
                 <AppBar sx={{ position: 'relative', backgroundColor: 'black' }}>
                     <Toolbar>
                         <Typography sx={{ ml: 2, flex: 1 }} variant='h6' component='div'>
-                            Question Player: Time {currentQuestionRemainingTime}
+                            Question Player
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -59,6 +51,7 @@ export default function QuestionLoaderDialog () {
                     <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
                         <QuestionCard currentQuestionCount={currentQuestionCount}
                             currentQuestion={currentQuestion}></QuestionCard>
+                        {currentQuestion && <TimeCard timeRemaining={currentQuestionRemainingTime}/>}
                     </Toolbar>
                 </List>
             </Dialog>

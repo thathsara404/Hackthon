@@ -20,13 +20,14 @@ export default function QuestionCard ({ currentQuestion, currentQuestionCount })
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button sx={{ fontWeight: 500 }} size='large'>Submit Your Answer</Button>
+                    <Button variant='contained' sx={{ fontWeight: 500, backgroundColor: '#1b598a' }}
+                        size='large'>Submit Your Answer</Button>
                 </CardActions>
             </Card>;
         } 
-        return <Typography variant='subtitle1' sx={{ fontSize: 20 }} gutterBottom>
-            You have completed the game. Please vist the Score Board and toggle My Last Session to view your results.
-        </Typography>;
+        return (<Typography variant='h3' sx={{ paddingTop: 20, color: '#1c465a' }} gutterBottom>
+            You just finished the game successfully !!!
+        </Typography>);
         
     };
     return (
