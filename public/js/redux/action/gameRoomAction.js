@@ -9,6 +9,8 @@ export const UPDATE_USER_STATUS_IN_SUB_ROOM = 'UPDATE_USER_IN_SUB_ROOM';
 export const UPDATE_NEW_GAME_STARTED_STATUS = 'UPDATE_NEW_GAME_STARTED_STATUS';
 export const UPDATE_CURRENT_SUBROOM_ID = 'UPDATE_CURRENT_SUBROOM_ID';
 export const UPDATE_CURRENT_QUESTION = 'UPDATE_CURRENT_QUESTION';
+export const UPDATE_QUESTION_COUNT = 'UPDATE_QUESTION_COUNT';
+export const UPDATE_QUESTION_REMAING_TIME = 'UPDATE_QUESTION_REMAING_TIME';
 
 export const updateLiveUsers = users => ({
     type: UPDATE_LIVE_USERS,
@@ -53,4 +55,14 @@ export const updateCurrentSubRoomId = subRoomId => ({
 export const updateCurrentQuestion = currentQuestionTemplate => ({
     type: UPDATE_CURRENT_QUESTION,
     payload: { currentQuestionTemplate }
+});
+
+export const updateQuestionCount = (number) => ({
+    type: UPDATE_QUESTION_COUNT,
+    payload: { number }
+});
+
+export const updateQuestionRemaingTime = (remaingTime) => ({
+    type: UPDATE_QUESTION_REMAING_TIME,
+    payload: { remaingTime }
 });

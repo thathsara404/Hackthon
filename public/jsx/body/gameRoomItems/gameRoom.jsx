@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { WebSocket } from '../js/websocketmodule/WebSocket';
+import { WebSocket } from '../../../js/websocketmodule/WebSocket';
 import { useSelector } from 'react-redux';
 import UUID from 'uuid';
 import { getGameRoomConnectedStatus, getNewGameRequests,
     getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom,
-    getCurrentGameRoomId, getGameStartedStatus } from '../js/redux/selector/gameRoomSelector';
-import { DEFAULT_SOCKET_ROOM } from '../../app/config/config';
+    getCurrentGameRoomId, getGameStartedStatus } from '../../../js/redux/selector/gameRoomSelector';
+import { DEFAULT_SOCKET_ROOM } from '../../../../app/config/config';
 import QuestionLoader from './questionLoader';
+import { QUESTION_SETTINGS } from '../../../../app/config/config';
 
 const GameRoom = ( { title }) => {
 
@@ -56,7 +57,7 @@ const GameRoom = ( { title }) => {
         if (pendingGameRequests.length === 0) {
             return (<button onClick={sendNewGameRoomRequest}>Create New Game</button>);
 
-        } else if (pendingGameRequests.length === 1 && pendingRequestUserCount <= 5) {
+        } else if (pendingGameRequests.length === 1 && pendingRequestUserCount <= QUESTION_SETTINGS) {
             return (<button onClick={joinGame}>
                 {`Join Game ${pendingGameRequests[0]}`}</button>);
         } 

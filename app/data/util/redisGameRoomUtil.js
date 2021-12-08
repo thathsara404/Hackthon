@@ -15,7 +15,8 @@ const MessageTypes = {
 
 const storeNewJoiner = (newJoinerID, newJoinerUsername) => {
     // Store connected user detail in a Hash
-    redisInstance.hmset(`user:${newJoinerID}`, 'userName', newJoinerUsername);
+    const dateTime = new Date().toLocaleString();
+    redisInstance.hmset(`user:${newJoinerID}`, 'userName', newJoinerUsername, 'dateTime', dateTime);
     // Store connected user ID in 'users:live' Set
     redisInstance.sadd(USERS_LIVE, newJoinerID);
 };
@@ -98,11 +99,12 @@ const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, callba
     redisInstance.hincrby(`groom:${roomId}`, 'noUsers', 1);
     redisInstance.hgetall(`groom:${roomId}`, (err, result) => {
         if (!err) {
-            if (result.noUsers >= 5) {
+            callbackFunction();
+            if (result.noUsers >= config.QUESTION_SETTINGS.NUM_OF_USERS_PER_GAME) {
                 redisInstance.srem(GROOMS_PENDING, roomId);
                 redisInstance.del(`groom:${roomId}`, (err, result) => {
                     if (!err) {
-                        console.log('Room Deleted Max count met...', result);
+                        console.log('Room Deleted. Max count met...', result);
                         callbackFunction();
                         setTimeout(() => {
                             callbackFunctionStartGame(roomId);
@@ -131,7 +133,12 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
          * TODO: Here call the question DB service and get questions from the Mongo DB
          * (use course id. get it from the room id)
          */
-        const question = `<input type="radio" id="html" name="fav_language" value="HTML">
+        const question = `<p>A feature story does not have to report on something that has just happened. It
+        investigates a series of events or development. It gives a more thorough explanation,
+        it may give background information, analyzes and gives new perspectives on an issue
+        in society. Descriptions of settings and people are often included to create the
+        atmosphere the writer is after. This is the reason the feature story is semi-objective. </p>
+        <input type="radio" id="html" name="fav_language" value="HTML">
         <label for="html">HTML</label><br>
         <input type="radio" id="css" name="fav_language" value="CSS">
         <label for="css">CSS</label><br>
