@@ -3,18 +3,15 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const authMiddleware = require('../middleware/authValidateMiddleware');
 const gameSessionValidateMiddleware = require('../middleware/gameSessionValidateMiddleware');
-const gameSessionAPI = require('../api/gameSessionAPI');
+const {createGameSession, getGameSession, getGameSessionById} = require('../api/gameSessionAPI');
 
 // get session details
-router.get('/gameSession', gameSessionValidateMiddleware.validateGameSession, async (req, res) => {
-    gameSessionAPI.getGameSession(req,res);
-});
+router.get('/gameSession', gameSessionValidateMiddleware.validateGameSession, getGameSession);
 
 //save new Session
-router.post('/gameSession', gameSessionValidateMiddleware.validateGameSession, async (req, res) => {
-    gameSessionAPI.createGameSession(req,res);
-});
+router.post('/gameSession', gameSessionValidateMiddleware.validateGameSession, createGameSession);
 
 //update existing Session
 router.put('/gameSession/:gameSessionId', gameSessionValidateMiddleware.validateGameSession, (req, res) => {
@@ -25,5 +22,8 @@ router.put('/gameSession/:gameSessionId', gameSessionValidateMiddleware.validate
 router.delete('/gameSession/:gameSessionId', gameSessionValidateMiddleware.validateGameSession, (req, res) => {
     res.send({ resp: 'under maintainence'});
 });
+
+router.route('/gameSession/:sessionId')
+    .get(authMiddleware.validateAuth, getGameSessionById);
 
 module.exports = router;

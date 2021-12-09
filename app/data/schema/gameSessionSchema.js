@@ -12,7 +12,8 @@ const gameSessionSchema = new mongoose.Schema({
         required: [true, 'gameSessionId is a required field']
     },
     userSelections: {
-        type: Array
+        type: Object,
+        required: [true, 'userSelections is a required field']
     }
 });
 
