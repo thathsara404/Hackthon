@@ -8,15 +8,15 @@ const config = {
     },
     ROUTE_PATH: '/api',
     DB: {
-        CONNECTION_STRING: 'mongodb://'.concat(process.env.MONGODB_USERNAME || 'mongo')
-            .concat(':').concat(process.env.MONGODB_PASSWORD || 'mongo')
-            .concat('@').concat(process.env.MONGO_DB_LIST || 'localhost:27017')
-            .concat('/').concat(process.env.mongo_dbname || 'AppDB')
-            .concat((process.env.ssl) ? '?ssl='.concat(process.env.ssl) : '')
-            .concat((process.env.MONGO_REPLICA_SET) ? '&replicaSet='.concat(process.env.MONGO_REPLICA_SET) : '')
-            .concat((process.env.authSource) ? '&authSource='.concat(process.env.authSource) : '')
-            .concat((process.env.retryWrites) ? '&retryWrites='.concat(process.env.retryWrites) : '')
-            .concat((process.env.w) ? '&w='.concat(process.env.w) : '')
+        CONNECTION_STRING: 'mongodb+srv://'.concat(process.env.MONGODB_USERNAME || 'weladmin')
+            .concat(':').concat(process.env.MONGODB_PASSWORD || 'Wel1234')
+            .concat('@').concat(process.env.MONGO_DB_LIST || 'cluster0.kcyoy.mongodb.net')
+            .concat('/').concat(process.env.mongo_dbname || 'wiley_gaming_profile')
+            // .concat((process.env.ssl) ? '?ssl='.concat(process.env.ssl) : '')
+            // .concat((process.env.MONGO_REPLICA_SET) ? '&replicaSet='.concat(process.env.MONGO_REPLICA_SET) : '')
+            // .concat((process.env.authSource) ? '&authSource='.concat(process.env.authSource) : '')
+            .concat('?retryWrites=').concat(process.env.retryWrites || 'true')
+            .concat('&w=').concat(process.env.w || 'majority')
     },
     REDIS: {
         PORT: process.env.PORT || 6379,
