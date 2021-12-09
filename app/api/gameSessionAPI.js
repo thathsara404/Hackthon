@@ -1,13 +1,13 @@
 'use strict';
 
-const GameSession = require('../data/schema/gameSessionSchema');
+const QuestionSession = require('../data/schema/questionSessionSchema');
 const { getSesssionById } = require('../util/gameSessionUtil');
 
 module.exports = {
     createGameSession: async (req, res) => {
         try {
             if (req.body) {
-                await GameSession.create(req.body).then(function (gameSession) {
+                await QuestionSession.create(req.body).then(function (gameSession) {
                     res.send(gameSession);
                 });
             } else {
@@ -20,7 +20,7 @@ module.exports = {
     getGameSession: async (req, res) => {
         try {
             if (req.body) {
-                await GameSession.find().then(function (gameSession) {
+                await QuestionSession.find().then(function (gameSession) {
                     res.send(gameSession);
                 });
             } else {
