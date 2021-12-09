@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { getSessionById } from '../../../js/redux/thunk/gameRoomThunk';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -41,7 +43,7 @@ const createData = (name, rank, score, attempts) => {
     return { name, rank, score, attempts };
 };
 
-const rows = [
+const mockRows = [
     createData('Daham', 1, 100, 10),
     createData('Sahan', 2, 90, 12),
     createData('Sanka', 3, 80, 8),
@@ -49,10 +51,37 @@ const rows = [
     createData('Dinesh', 5, 60, 1)
 ];
 
-export default function ScoreCardContent () {
+const setRank = (userStats) => {
+    return userStats
+        .sort((firstItem, secondItem) => secondItem.marks - firstItem.marks)
+        .map((stat, index) => ({...stat, rank: index+1}));
+}
+
+export default function ScoreCardContent ({ showLastSession }) {
 
     // Style
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+
+    const [rows, setRows] = React.useState([]);
+
+    React.useEffect(() => {
+        if (showLastSession) {
+            dispatch(getSessionById(1)).then((result) => {
+                let rowsArray = JSON.parse(JSON.stringify(result.userStats));
+                rowsArray = setRank(rowsArray);
+                rowsArray = rowsArray.map(stat => {
+                    return createData(stat.userName, stat.rank, stat.marks, 1);
+                });
+                setRows(rowsArray);
+            }).catch((error) => {
+                console.error('Error occurred while retrieving last game session: ', error);
+            });
+        } else {
+            setRows(mockRows);
+        }
+    }, [showLastSession]);
 
     return (
         <TableContainer component={Paper}>
@@ -83,3 +112,4 @@ export default function ScoreCardContent () {
         </TableContainer>
     );
 }
+

@@ -25,6 +25,8 @@ export default function ScoreCard () {
 
     // Style
     const classes = useStyles();
+
+    const [isLastSession, toggleLastSession] = React.useState(false);
     
     return (
         <Card className={classes.root}>
@@ -37,8 +39,10 @@ export default function ScoreCard () {
                     control={<Switch color='primary' />}
                     label='My Last Session'
                     labelPlacement='start'
+                    checked={isLastSession}
+                    onChange={(e) => toggleLastSession(e.target.checked)}
                 />
-                <ScoreCardContent/>
+                <ScoreCardContent showLastSession={isLastSession}/>
             </CardContent>
         </Card>
     );
