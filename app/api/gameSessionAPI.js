@@ -1,7 +1,7 @@
 'use strict';
 
 const QuestionSession = require('../data/schema/questionSessionSchema');
-const { getSesssionById } = require('../util/gameSessionUtil');
+const { getSessionById } = require('../util/gameSessionUtil');
 
 module.exports = {
     createGameSession: async (req, res) => {
@@ -32,7 +32,7 @@ module.exports = {
     },
     getGameSessionById: async (req, res, next) => {
         try {
-            const data = await getSesssionById(req.params.sessionId);
+            const data = await getSessionById(req.params.sessionId);
             res.json(data);
         } catch (error) {
             console.error('Error occurred while retrieving game session by id: ', error);
