@@ -1,9 +1,10 @@
 'use strict';
 
-import { UPDATE_LOGIN_STATUS } from '../action/mainAction';
+import { UPDATE_LOGIN_STATUS, UPDATE_USER_DETAILS } from '../action/mainAction';
 
 const initialState = {
-    isLoggedIn: null
+    isLoggedIn: null,
+    userDetails: null
 };
 
 export const main = (state = initialState, action) => {
@@ -13,6 +14,10 @@ export const main = (state = initialState, action) => {
         case UPDATE_LOGIN_STATUS: {
             const loginStatus = payload.loginStatus;
             return { ...state, isLoggedIn: loginStatus };
+        }
+        case UPDATE_USER_DETAILS: {
+            const userDetails = payload.userDetails;
+            return { ...state, userDetails: userDetails };
         } default: {
             return state;
         }
