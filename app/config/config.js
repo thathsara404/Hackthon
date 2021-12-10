@@ -39,7 +39,7 @@ const config = {
         ROLLING: process.env.ROLLING || true
     },
     QUESTION_SETTINGS: {
-        NUM_OF_QUESTIONS_PER_GAME: process.env.NUM_OF_QUESTIONS_PER_GAME || 10,
+        NUM_OF_QUESTIONS_PER_GAME: process.env.NUM_OF_QUESTIONS_PER_GAME || 3,
         NUM_OF_USERS_PER_GAME: process.env.NUM_OF_USERS_PER_GAME || 2,
         QUESTION_TIMEOUT: process.env.QUESTION_TIMEOUT || 3000,
         TIME_OUT_VALUE_END_GAME_MESSAGE: process.env.TIME_OUT_VALUE_END_GAME_MESSAGE || 3000,

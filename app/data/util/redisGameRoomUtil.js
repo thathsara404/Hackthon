@@ -8,6 +8,7 @@ const redisInstance = require('../connector/redisConnector');
 const { USERS_LIVE, GROOMS_PENDING } = require('../../const/redisKeys');
 const config = require('../../config/config');
 const { getQuestion } = require('../../util/questionUtil');
+const { getQuestionSessionsById } = require('../../util/questionSessionUtil');
 
 const MessageTypes = {
     FINISH_GAME: 'FINISH_GAME',
@@ -120,6 +121,45 @@ const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, callba
     });
 };
 
+const markDownAnswers = async (answeredQuestions) => {
+
+    let accumulatedScore = 0;
+    const questionTimeLimit = config.QUESTION_SETTINGS.QUESTION_TIMEOUT / 1000;
+    answeredQuestions.forEach(question => {
+        const randomSeconds = Math.floor((Math.random() * questionTimeLimit) + 1);
+        // Due to type mismatch, we have used == here. No time to parse :D
+        if (question.correctAnswer == question.userSelections.answer) {
+            accumulatedScore += 50 + (questionTimeLimit - randomSeconds) / questionTimeLimit * 100;
+        } else {
+            if (accumulatedScore > 50) {
+                accumulatedScore -= 50;
+            }
+        }
+    });
+
+    return accumulatedScore;
+};
+
+const generateUserStats = async (gameRoomId) => {
+
+    const sessions = await getQuestionSessionsById('12345');
+    const userStats = sessions.map(( session ) => {
+        const accumulatedScoreForUser = markDownAnswers(session.documents);
+        return {
+            userId: session.userId,
+            userName: session.userName,
+            marks: accumulatedScoreForUser
+        };
+    });
+    
+    const sessionStats = {
+        gameSessionId: gameRoomId,
+        userStats: userStats
+    };
+
+    console.log('Session Stats : ', sessionStats);
+};
+
 const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
     let count = 0;
     let question = null;
@@ -130,6 +170,7 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
             setTimeout(() => {
                 gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.FINISH_GAME });
             }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_END_GAME_MESSAGE);
+            generateUserStats(gameSubRoom);
         }
 
         try {
@@ -139,7 +180,6 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
             return;
         }
 
-        console.log('Question template : ', question.template);
         gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.QUESTION,
             'qestionTemplate': question.template });
     }, config.QUESTION_SETTINGS.QUESTION_TIMEOUT);
