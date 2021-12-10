@@ -49,7 +49,11 @@ const config = {
         TIME_OUT_VALUE_DISPLAY_COMPLETED_GAME_MESSAGE:
                 process.env.TIME_OUT_VALUE_DISPLAY_COMPLETED_GAME_MESSAGE || 5000
     },
-    DEFAULT_SOCKET_ROOM: process.env.DEFAULT_SOCKET_ROOM || 'gameSpace'
+    DEFAULT_SOCKET_ROOM: process.env.DEFAULT_SOCKET_ROOM || 'gameSpace',
+    SYSTEM_TOKEN: {
+        SYSTEM_VALIDATE_TOKEN:process.env.SYSTEM_VALIDATE_TOKEN || 'http://localhost:8085/system-token/token-api/validateToken',
+        SYSTEM_USERNAME: process.env.SYSTEM_USER_NAME || 'Test122'
+    }
 };
 
 module.exports = config;

@@ -37,15 +37,14 @@ export default function QuestionCard({ currentQuestion, currentQuestionCount }) 
                         sx={{ fontSize: 20 }} gutterBottom>
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button onClick={()=> dispatch(saveSession(sessionJson))} sx={{ fontWeight: 500 }} size='large'>Submit Your Answer</Button>
+                <CardActions>       
+                    <Button onClick={()=> dispatch(saveSession(sessionJson))} variant='contained' sx={{ fontWeight: 500, backgroundColor: '#1b598a' }} size='large'>Submit Your Answer</Button>
                 </CardActions>
             </Card>;
         }
-        return <Typography variant='subtitle1' sx={{ fontSize: 20 }} gutterBottom>
-            You have completed the game. Please vist the Score Board and toggle My Last Session to view your results.
+        return <Typography variant='h3' sx={{ fontSize: 20,  paddingTop: 20, color: '#1c465a' }} gutterBottom>
+            You just finished the game successfully !!!
         </Typography>;
-
     };
     return (
         <Display />

@@ -6,13 +6,18 @@ const path = require('path');
 const authMiddleware = require('../middleware/authValidateMiddleware');
 const loginMiddleware = require('../middleware/loginValidateMiddleware');
 
-router.get('/validateLogin', loginMiddleware.validateLogin, async (req, res) => {
-    res.send({ 'isAuthonticated': true });
+router.post('/validateLogin', loginMiddleware.validateLogin, async (req, res) => {
+    console.log(req.session)
+    res.send({ 'isAuthenticated': req.session.isAuthenticated });
 });
 
 // TODO: make this method POST
-router.get('/login', authMiddleware.validateAuth, (req, res) => {
+router.post('/login', authMiddleware.validateAuth , async (req, res) => {
     res.sendFile('main.html', { root: path.dirname(require.main.filename) + '/dist/' });
+});
+
+router.get('/testHarness', async (req, res) => {
+    res.sendFile('testharness.html', { root: path.dirname(require.main.filename) + '/dist/' });
 });
 
 module.exports = router;
