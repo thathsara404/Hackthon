@@ -1,15 +1,16 @@
 'use strict';
 
 const validateLogin = async (req, res, next) => {
-
     try {
-        if (req.session.isAuthenticated) {
-            next();
-        } else {
-            res.sendStatus(401);
+        console.log('inside login validator', req.body)
+        if(req.session.isAuthenticated) {
+            return next();
         }
+        console.log('req.session',req.session)
+        throw new Error(401)
     } catch (error) {
-        throw new Error(error);
+        console.log('Error - ', error);
+        throw new Error(401)
     }
 
 };

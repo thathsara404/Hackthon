@@ -7,8 +7,8 @@ import { updateLoginStatus } from '../action/mainAction';
 
 export const validateLogin = () => async (dispatch) => {
 
-    HttpUtil.get(API_PATH.VALIDATE_LOGIN).then((result) => {
-        dispatch(updateLoginStatus(result.isAuthonticated));
+    HttpUtil.post(API_PATH.VALIDATE_LOGIN).then((result) => {
+        dispatch(updateLoginStatus(result.isAuthenticated));
     }).catch((error) => {
         dispatch(updateLoginStatus(false));
         console.error('Error form User Thunk: ', error);
