@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { saveSession } from '../../../js/redux/thunk/gameRoomThunk';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -6,9 +8,25 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 // eslint-disable-next-line react/prop-types
-export default function QuestionCard ({ currentQuestion, currentQuestionCount }) {
+export default function QuestionCard({ currentQuestion, currentQuestionCount }) {
+
+    const [sessionJson, setsessionJson] = React.useState(
+        {
+            userId: "1234",
+            gameSessionId: "1234",
+            userSelections: {}
+        }
+    );
+
+    const submitQuestionSession = () => {
+        const dispatch = useDispatch();
+        useEffect(() => {
+            dispatch(saveSession(sessionJson));
+        }, []);
+    }
 
     const Display = () => {
+        const dispatch = useDispatch();
         if (currentQuestion) {
             return <Card sx={{ width: 900, marginTop: 10 }}>
                 <CardContent>
@@ -19,18 +37,16 @@ export default function QuestionCard ({ currentQuestion, currentQuestionCount })
                         sx={{ fontSize: 20 }} gutterBottom>
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button variant='contained' sx={{ fontWeight: 500, backgroundColor: '#1b598a' }}
-                        size='large'>Submit Your Answer</Button>
+                <CardActions>       
+                    <Button onClick={()=> dispatch(saveSession(sessionJson))} variant='contained' sx={{ fontWeight: 500, backgroundColor: '#1b598a' }} size='large'>Submit Your Answer</Button>
                 </CardActions>
             </Card>;
-        } 
-        return (<Typography variant='h3' sx={{ paddingTop: 20, color: '#1c465a' }} gutterBottom>
+        }
+        return <Typography variant='h3' sx={{ fontSize: 20,  paddingTop: 20, color: '#1c465a' }} gutterBottom>
             You just finished the game successfully !!!
-        </Typography>);
-        
+        </Typography>;
     };
     return (
-        <Display/>
+        <Display />
     );
 }

@@ -6,7 +6,8 @@
 
 const redisInstance = require('../connector/redisConnector');
 const { USERS_LIVE, GROOMS_PENDING } = require('../../const/redisKeys');
-const config = require('../../config/config'); 
+const config = require('../../config/config');
+const { getQuestion } = require('../../util/questionUtil');
 
 const MessageTypes = {
     FINISH_GAME: 'FINISH_GAME',
@@ -121,7 +122,8 @@ const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, callba
 
 const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
     let count = 0;
-    const intervalID = setInterval(() => {
+    let question = null;
+    const intervalID = setInterval(async () => {
         count = count + 1;
         if (count === config.QUESTION_SETTINGS.NUM_OF_QUESTIONS_PER_GAME) {
             clearInterval(intervalID);
@@ -129,23 +131,17 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
                 gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.FINISH_GAME });
             }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_END_GAME_MESSAGE);
         }
-        /*
-         * TODO: Here call the question DB service and get questions from the Mongo DB
-         * (use course id. get it from the room id)
-         */
-        const question = `<p>A feature story does not have to report on something that has just happened. It
-        investigates a series of events or development. It gives a more thorough explanation,
-        it may give background information, analyzes and gives new perspectives on an issue
-        in society. Descriptions of settings and people are often included to create the
-        atmosphere the writer is after. This is the reason the feature story is semi-objective. </p>
-        <input type="radio" id="html" name="fav_language" value="HTML">
-        <label for="html">HTML</label><br>
-        <input type="radio" id="css" name="fav_language" value="CSS">
-        <label for="css">CSS</label><br>
-        <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-        <label for="javascript">JavaScript</label>`;
+
+        try {
+            question = await getQuestion();    
+        } catch (error) {
+            console.error('Error in getting question : ', error);
+            return;
+        }
+
+        console.log('Question template : ', question.template);
         gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.QUESTION,
-            'qestionTemplate': question });
+            'qestionTemplate': question.template });
     }, config.QUESTION_SETTINGS.QUESTION_TIMEOUT);
 };
 
