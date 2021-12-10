@@ -9,6 +9,7 @@ const { USERS_LIVE, GROOMS_PENDING } = require('../../const/redisKeys');
 const config = require('../../config/config');
 const { getQuestion } = require('../../util/questionUtil');
 const { getQuestionSessionsById } = require('../../util/questionSessionUtil');
+const { createSession } = require('../../util/gameSessionUtil');
 
 const MessageTypes = {
     FINISH_GAME: 'FINISH_GAME',
@@ -121,7 +122,7 @@ const updateGameRoomsInfo = (callbackFunction, callbackFunctionStartGame, callba
     });
 };
 
-const markDownAnswers = async (answeredQuestions) => {
+const markDownAnswers = (answeredQuestions) => {
 
     let accumulatedScore = 0;
     const questionTimeLimit = config.QUESTION_SETTINGS.QUESTION_TIMEOUT / 1000;
@@ -137,7 +138,7 @@ const markDownAnswers = async (answeredQuestions) => {
         }
     });
 
-    return accumulatedScore;
+    return Math.round(accumulatedScore);
 };
 
 const generateUserStats = async (gameRoomId) => {
@@ -157,7 +158,11 @@ const generateUserStats = async (gameRoomId) => {
         userStats: userStats
     };
 
-    console.log('Session Stats : ', sessionStats);
+    try {
+        createSession(sessionStats);
+    } catch (error) {
+        console.error('error: ', error);
+    }
 };
 
 const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {

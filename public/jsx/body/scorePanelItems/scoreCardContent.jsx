@@ -100,7 +100,7 @@ export default function ScoreCardContent ({ showLastSession }) {
                     {rows.map((row) => (
                         <StyledTableRow key={row.name}>
                             <StyledTableCell component='th' scope='row'>
-                                {row.name} {row.rank === 1 && <EmojiEventsIcon className={classes.eventIcon}/>}
+                                {row.name}
                             </StyledTableCell>
                             <StyledTableCell align='right'>{row.rank}</StyledTableCell>
                             <StyledTableCell align='right'>{row.score}</StyledTableCell>

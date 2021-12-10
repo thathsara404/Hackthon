@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const gameSessionSchema = new Schema({
-    gameSessionId: Number,
+    gameSessionId: String,
     userStats: [{
         userId: Number,
         userName: String,
