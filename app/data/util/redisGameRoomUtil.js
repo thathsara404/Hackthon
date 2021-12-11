@@ -179,14 +179,14 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
         }
 
         try {
-            question = await getQuestion();    
+            question = await getQuestion();  
         } catch (error) {
             console.error('Error in getting question : ', error);
             return;
         }
 
         gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.QUESTION,
-            'qestionTemplate': question.template });
+            'qestionTemplate': question.template, 'questionId': question._id });
     }, config.QUESTION_SETTINGS.QUESTION_TIMEOUT);
 };
 

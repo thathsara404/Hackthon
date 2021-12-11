@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveSession } from '../../../js/redux/thunk/gameRoomThunk';
 import Card from '@mui/material/Card';
@@ -10,19 +11,19 @@ import { getUserDetails, getUserId } from '../../../js/redux/selector/userSelect
 import { getCurrentSubRoomId, getCurrentQuestionRemaingTime } from '../../../js/redux/selector/gameRoomSelector';
 
 // eslint-disable-next-line react/prop-types
-export default function QuestionCard({ currentQuestion, currentQuestionCount }) {
+export default function QuestionCard({ currentQuestion, currentQuestionCount, currentQuestionId }) {
 
+    const dispatch = useDispatch();
     const [sessionJson, setsessionJson] = React.useState(
         {
             userId: useSelector(state => getUserId(state)),
             gameSessionId: useSelector(state => getCurrentSubRoomId(state)),
-            userSelections: {"questionId":"1"},
+            userSelections: {},
             currentQuestionRemainingTime: useSelector(state => getCurrentQuestionRemaingTime(state))
         }
     );
     const Display = () => {
-        const dispatch = useDispatch();
-        console.log(currentQuestion);
+        // const dispatch = useDispatch();
         if (currentQuestion) {
             return <Card sx={{ width: 900, marginTop: 10 }}>
                 <CardContent>
@@ -34,7 +35,7 @@ export default function QuestionCard({ currentQuestion, currentQuestionCount }) 
                     </Typography>
                 </CardContent>
                 <CardActions>       
-                    <Button onClick={()=> dispatch(saveSession(sessionJson))} variant='contained' sx={{ fontWeight: 500, backgroundColor: '#1b598a' }} size='large'>Submit Your Answer</Button>
+                    <Button onClick={submitQuestionSession} variant='contained' sx={{ fontWeight: 500, backgroundColor: '#1b598a' }} size='large'>Submit Your Answer</Button>
                 </CardActions>
             </Card>;
         }
@@ -42,6 +43,14 @@ export default function QuestionCard({ currentQuestion, currentQuestionCount }) 
             You just finished the game successfully !!!
         </Typography>;
     };
+    
+    const submitQuestionSession = () => {
+        sessionJson.userSelections = {
+            "questionId":currentQuestionId,
+            "answerId": document.querySelector('input[type="radio"]:checked').value
+        }
+        dispatch(saveSession(sessionJson));
+    }
     return (
         <Display />
     );
