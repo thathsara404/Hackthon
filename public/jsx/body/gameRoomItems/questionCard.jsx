@@ -20,10 +20,9 @@ export default function QuestionCard({ currentQuestion, currentQuestionCount }) 
             currentQuestionRemainingTime: useSelector(state => getCurrentQuestionRemaingTime(state))
         }
     );
-    console.log('popop', sessionJson.userId, sessionJson.gameSessionId, sessionJson.currentQuestionRemainingTime);
-
     const Display = () => {
         const dispatch = useDispatch();
+        console.log(currentQuestion);
         if (currentQuestion) {
             return <Card sx={{ width: 900, marginTop: 10 }}>
                 <CardContent>
