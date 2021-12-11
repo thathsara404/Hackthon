@@ -42,7 +42,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ProfileCard () {
-    const userDetails = useSelector(state => getUserDetails(state))
+    const userDetails = useSelector(state => getUserDetails(state));
     // Style
     const classes = useStyles();
     
@@ -57,18 +57,23 @@ export default function ProfileCard () {
             <CardContent >
                 <Item>
                     <Typography sx={{ color: '#1c465a' }} gutterBottom variant='h5' component='div'>
-            { userDetails.firstName +' '+ userDetails.lastName }
+                        { userDetails.firstName + ' ' + userDetails.lastName }
                     </Typography>
                 </Item>
                 <Item className={classes.itemSecond}>
                     <Item className={classes.subItem}>
                         <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
-                        { userDetails.courseName }
+                            Course: { userDetails.courseName }
                         </Typography>
                     </Item>
                     <Item className={classes.subItem}>
                         <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
-                        Username: { userDetails.username }
+                        First Name: { userDetails.firstName }
+                        </Typography>
+                    </Item>
+                    <Item className={classes.subItem}>
+                        <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
+                        Last Name: { userDetails.lastName }
                         </Typography>
                     </Item>
                     <Item className={classes.subItem}>

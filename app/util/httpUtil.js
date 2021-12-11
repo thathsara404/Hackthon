@@ -13,12 +13,14 @@ class HttpUtil {
         return response.json();
     }
 
-    static async post (uri, data = {}) {
-        console.log('================inside post httpuitl', data)
+    static async post (uri, data = {}, headers = {}) {
         const response = await axios({
             method: 'post',
             url: uri,
-            data: {...data}});
+            headers: {
+                ...headers
+            },
+            data: { ...data } });
         return response;
     }
 
@@ -29,9 +31,9 @@ class HttpUtil {
             headers: {
                 'Content-Type': 'application/json'
             },
-            data: {...data}
+            data: { ...data }
         });
         return response.json();
     }
 }
-module.exports = HttpUtil 
+module.exports = HttpUtil; 

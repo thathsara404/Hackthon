@@ -43,14 +43,14 @@ export default function Instructions () {
                 >
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>Learn to Earn</Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                        Earn Crypto & Coupon Codes
+                        Earn Crypto Token
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
                         Our gaming platform is a great place to improve your knowledge.
                         Not only that but also we are happy to announce,
-                        you will be rewarded with a Crypto / Coupon if you become the top scorer.
+                        you will be rewarded with a Crypto Token if you become the top scorer.
                         The system will select the highest ranked student in the Score Board weekly and
                         will send the reward based on your preferred way.
                     </Typography>
