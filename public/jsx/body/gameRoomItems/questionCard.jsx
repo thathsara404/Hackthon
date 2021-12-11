@@ -16,7 +16,7 @@ export default function QuestionCard({ currentQuestion, currentQuestionCount }) 
         {
             userId: useSelector(state => getUserId(state)),
             gameSessionId: useSelector(state => getCurrentSubRoomId(state)),
-            userSelections: {},
+            userSelections: {"questionId":"1"},
             currentQuestionRemainingTime: useSelector(state => getCurrentQuestionRemaingTime(state))
         }
     );
