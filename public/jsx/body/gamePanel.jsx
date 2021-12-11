@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
@@ -13,6 +14,7 @@ import ScoreCard from './scorePanelItems/scoreCard';
 import ProfileCard from './scorePanelItems/profileCard';
 import LiveUsers from './gameRoomItems/liveUsers';
 import GameRoomMainContainer from './gameRoomItems/gameRoomMainContainer';
+import { getUserDetails } from '../../../public/js/redux/selector/userSelector';
 
 const useStyles = makeStyles({
     root: {
@@ -59,6 +61,7 @@ const a11yProps = (index) => {
 };
 
 export default function GamePanel () {
+    const userDetails = useSelector(state => getUserDetails(state))
     // Style
     const classes = useStyles();
 

@@ -29,7 +29,6 @@ export default function GameRoomMainContainer () {
 
     const isGameRoomConnected = useSelector(state => getGameRoomConnectedStatus(state));
     const userDetails = useSelector(state => getUserDetails(state))
-    console.log('userDetails', userDetails);
     useEffect(() => {
         // Connect to the game
         if (!isGameRoomConnected) {

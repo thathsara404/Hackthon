@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -6,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import ProfileImage from '../../../images/profile.JPG';
+import { getUserDetails } from '../../../js/redux/selector/userSelector';
 
 import { makeStyles } from '@mui/styles';
 
@@ -40,12 +42,12 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ProfileCard () {
-
+    const userDetails = useSelector(state => getUserDetails(state));
     // Style
     const classes = useStyles();
     
     return (
-        <Card className={classes.root}>
+        userDetails && <Card className={classes.root}>
             <CardMedia
                 component='img'
                 height='250'
@@ -55,18 +57,23 @@ export default function ProfileCard () {
             <CardContent >
                 <Item>
                     <Typography sx={{ color: '#1c465a' }} gutterBottom variant='h5' component='div'>
-            Thathsara Raviraj
+                        { userDetails.firstName + ' ' + userDetails.lastName }
                     </Typography>
                 </Item>
                 <Item className={classes.itemSecond}>
                     <Item className={classes.subItem}>
                         <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
-                        Course: Machine Learning
+                            Course: { userDetails.courseName }
                         </Typography>
                     </Item>
                     <Item className={classes.subItem}>
                         <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
-                        Username: tudugampal
+                        First Name: { userDetails.firstName }
+                        </Typography>
+                    </Item>
+                    <Item className={classes.subItem}>
+                        <Typography sx={{ color: '#1e252b' }} gutterBottom component='div'>
+                        Last Name: { userDetails.lastName }
                         </Typography>
                     </Item>
                     <Item className={classes.subItem}>
