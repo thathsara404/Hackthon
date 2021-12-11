@@ -45,9 +45,10 @@ export default function QuestionCard({ currentQuestion, currentQuestionCount, cu
     };
     
     const submitQuestionSession = () => {
+        const selectedRadio = document.querySelector('input[type="radio"]:checked');
         sessionJson.userSelections = {
             "questionId":currentQuestionId,
-            "answerId": document.querySelector('input[type="radio"]:checked').value
+            "answerId": (selectedRadio.hasAttribute("data-index")) ? selectedRadio.getAttribute("data-index") : 1
         }
         dispatch(saveSession(sessionJson));
     }
