@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import UUID from 'uuid';
 import { getGameRoomConnectedStatus, getNewGameRequests,
     getCurrentGameRequestJoinedUserCount, getUserJoinedStatusInSubRoom,
-    getCurrentGameRoomId, getGameStartedStatus } from '../../../js/redux/selector/gameRoomSelector';
+    getCurrentGameRoomId, getGameStartedStatus, getUserDetails } from '../../../js/redux/selector/gameRoomSelector';
 import { DEFAULT_SOCKET_ROOM } from '../../../../app/config/config';
 import QuestionLoader from './questionLoader';
 import { QUESTION_SETTINGS } from '../../../../app/config/config';
@@ -18,26 +18,27 @@ const GameRoom = ( { title }) => {
     const userJoinedStatusInSubRoom = useSelector(state => getUserJoinedStatusInSubRoom(state));
     const currentGameRoomId = useSelector(state => getCurrentGameRoomId(state));
     const gameStartedStatus = useSelector(state => getGameStartedStatus(state));
+    const userDetails = useSelector(state => getUserDetails(state))
 
     useEffect(() => {
         document.title = title;
         // Connect to Game
         if (!isGameRoomConnected) {
             // TODO: Pass the correct User data
-            WebSocket.connect(DEFAULT_SOCKET_ROOM, 'thathsara', Math.floor((Math.random() * 100) + 1));
+            WebSocket.connect(DEFAULT_SOCKET_ROOM, userDetails.username, userDetails.userId);
         }
     });
 
     const sendNewGameRoomRequest = () => {
         // TODO: Get the couse Id from user info (that should be available in the redux store under user info)
-        const courseId = '00001';
-        const courseName = 'Brain Science';
-        const userId = '1000001';
+        const courseId = userDetails.courseID;
+        const courseName = userDetails.courseName;
+        const userId = userDetails.userId;
         WebSocket.createNewGameRoom(`${ UUID.v4()}-$-${courseId}`, courseName, userId);
     };
 
     const joinGame = () => {
-        WebSocket.joindNewGameRoom(currentGameRoomId, '1000001');
+        WebSocket.joindNewGameRoom(currentGameRoomId, userDetails.userId);
     };
 
     const Content = () => {
