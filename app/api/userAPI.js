@@ -33,7 +33,6 @@ module.exports = {
     },
     getUserById: async (req, res, next) => {
         try {
-            console.log('PARAMMSSS', req)
             const data = await getUserById(req);
             res.json(data);
         } catch (error) {
