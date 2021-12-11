@@ -14,6 +14,10 @@ const gameSessionSchema = new mongoose.Schema({
     userSelections: {
         type: Object,
         required: [true, 'userSelections is a required field']
+    },
+    currentQuestionRemainingTime:{
+        type: String,
+        required: [true, 'currentQuestionRemainingTime is a required field']
     }
 });
 

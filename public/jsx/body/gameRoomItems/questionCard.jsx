@@ -1,29 +1,26 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { saveSession } from '../../../js/redux/thunk/gameRoomThunk';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { getUserDetails, getUserId } from '../../../js/redux/selector/userSelector';
+import { getCurrentSubRoomId, getCurrentQuestionRemaingTime } from '../../../js/redux/selector/gameRoomSelector';
 
 // eslint-disable-next-line react/prop-types
 export default function QuestionCard({ currentQuestion, currentQuestionCount }) {
 
     const [sessionJson, setsessionJson] = React.useState(
         {
-            userId: "1234",
-            gameSessionId: "1234",
-            userSelections: {}
+            userId: useSelector(state => getUserId(state)),
+            gameSessionId: useSelector(state => getCurrentSubRoomId(state)),
+            userSelections: {},
+            currentQuestionRemainingTime: useSelector(state => getCurrentQuestionRemaingTime(state))
         }
     );
-
-    const submitQuestionSession = () => {
-        const dispatch = useDispatch();
-        useEffect(() => {
-            dispatch(saveSession(sessionJson));
-        }, []);
-    }
+    console.log('popop', sessionJson.userId, sessionJson.gameSessionId, sessionJson.currentQuestionRemainingTime);
 
     const Display = () => {
         const dispatch = useDispatch();

@@ -10,7 +10,7 @@ const { createGameSession, getGameSession, getGameSessionById } = require('../ap
 router.get('/gameSession', gameSessionValidateMiddleware.validateGameSession, getGameSession);
 
 // Save new Session
-router.post('/gameSession', gameSessionValidateMiddleware.validateGameSession, createGameSession);
+router.post('/gameSession', createGameSession);
 
 // Update existing Session
 router.put('/gameSession/:gameSessionId', gameSessionValidateMiddleware.validateGameSession, (req, res) => {

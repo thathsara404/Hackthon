@@ -10,6 +10,8 @@ export const getUserJoinedStatusInSubRoom = state => state.gameRoom?.subRoomStat
 
 export const getCurrentGameRoomId = state => state.gameRoom?.pendingGameRequestsInfo[0]?.gameRoomId;
 
+export const getCurrentSubRoomId = state => state.gameRoom?.currentSubRoomId;
+
 export const getGameStartedStatus = state => state.gameRoom?.newGameStarted;
 
 export const getCurrentQuestion = state => state.gameRoom?.currentQuestion;

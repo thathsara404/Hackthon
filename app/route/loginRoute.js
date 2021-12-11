@@ -8,7 +8,7 @@ const loginMiddleware = require('../middleware/loginValidateMiddleware');
 
 router.post('/validateLogin', loginMiddleware.validateLogin, async (req, res) => {
     console.log(req.session)
-    res.send({ 'isAuthenticated': req.session.isAuthenticated });
+    res.send({ 'isAuthenticated': req.session.isAuthenticated, 'userDetails': req.session.details });
 });
 
 // TODO: make this method POST

@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const gameSessionSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: [true, 'firstName is a required field']
@@ -38,6 +38,6 @@ const gameSessionSchema = new mongoose.Schema({
     }
 });
 
-const GameSession = mongoose.model('user', gameSessionSchema);
+const GameSession = mongoose.model('user', userSchema);
 
 module.exports = GameSession;
