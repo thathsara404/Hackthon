@@ -1,30 +1,36 @@
 'use strict';
 const HttpUtil = require('../util/httpUtil')
 const configs = require('../config/config')
-const axios = require('axios').default;
+const { createUser, getUserById } = require('../util/userUtil');
 
 const validateAuth = async (req, res, next) => {
 
     try {
-        console.log('inside login validator', req.body)
         const result = await HttpUtil.post(configs.SYSTEM_TOKEN.SYSTEM_VALIDATE_TOKEN, {systemUsername: configs.SYSTEM_TOKEN.SYSTEM_USERNAME, token: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0MTIyIiwiZXhwIjoxNjQyNzEzNjgzLCJpYXQiOjE2MzkxMTM2ODN9.edTgSHOGvyV0YJ3J4mAw0d4kWvtKQUIbnZVuiG1fOSY0ommiisTpnitZGaOTS4Jacfo3G_21j_T029m3o3x9LA'});
-          console.log(result)
-        if(result.data.validToken) {
-
+          //console.log(result)
+        if (result.data.validToken) {
+            // check if user exists in Db
+            const user = await getUserById(req.body.userId);
+            if (user === null) {
+                req.session.isNewUser = true;
+                const userobj = await createUser(req.body);
+                console.log('userobj', userobj)
+            } else {
+                req.session.isNewUser = false;
+            }
             req.session.isAuthenticated = true;
 
             req.session.details = {
-                firstName: req.body.fname,
-                lastName: req.body.lname,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
                 userId: req.body.userId,
                 username: req.body.username,
-                courseID: req.body.courseId,
+                courseID: req.body.courseID,
                 courseName: req.body.courseName,
-                isCourseCompleted: req.body.isCompleted
+                isCourseCompleted: req.body.isCourseCompleted
             }
 
         }
-        console.log('req.session',req.session)
         return next();
 
     } catch (error) {
