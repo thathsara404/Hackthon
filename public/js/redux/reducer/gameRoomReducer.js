@@ -52,7 +52,8 @@ export const gameRoom = (state = initialState, action) => {
             return { ...state, currentSubRoomId: payload };
         }
         case UPDATE_CURRENT_QUESTION: {
-            return { ...state, currentQuestion: payload };
+            console.log('reducerrr', payload);
+            return { ...state, currentQuestion: (payload)? payload[1]: null, currentQuestionID: (payload)? payload[0]: null };
         }
         case UPDATE_QUESTION_COUNT: {
             let newQuestionCount = 0;

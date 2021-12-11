@@ -106,6 +106,7 @@ export class WebSocket {
             console.log('Message From New Game Room: ', message);
             const messageType = message.messageType;
             const questionTemplate = message.qestionTemplate;
+            const questionId = message.questionId;
             switch (messageType) {
                 case WebSocketAction.START_GAME:
                     store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
@@ -131,11 +132,11 @@ export class WebSocket {
                     break;
                 case WebSocketAction.QUESTION:
                     store.dispatch({ type: UPDATE_CURRENT_QUESTION,
-                        payload: questionTemplate });
+                        payload: [questionId,questionTemplate] });
                     store.dispatch({ type: UPDATE_QUESTION_COUNT, payload: 1 });
                     // Update current question remaining time
                     (() => {
-                        let initialValue = config.QUESTION_SETTINGS.QUESTION_TIMEOUT / 1000;
+                        let initialValue = config.QUESTION_SETTINGS.QUESTION_TIMEOUT / 5000;
                         const intervalId = setInterval(() => {
                             initialValue = initialValue - 1;
                             if (initialValue >= 0) {
@@ -144,7 +145,7 @@ export class WebSocket {
                                 clearInterval(intervalId);
                                 store.dispatch({ type: UPDATE_QUESTION_REMAING_TIME, payload: 0 });
                             }
-                        }, 1000);
+                        }, 5000);
                     })();
                     break;
                 default:
