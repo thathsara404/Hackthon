@@ -33,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(config.ROUTE_PATH, require('./app/route/healthRoute'));
 app.use(config.ROUTE_PATH, require('./app/route/loginRoute'));
 app.use(config.ROUTE_PATH, require('./app/route/gameSessionRoute'));
+app.use(config.ROUTE_PATH, require('./app/route/smartContractRoute'));
 
 // Handle application errors
 app.use(function (err, req, res, next) {

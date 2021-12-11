@@ -9,15 +9,6 @@ const validateAuth = async (req, res, next) => {
         const result = await HttpUtil.post(configs.SYSTEM_TOKEN.SYSTEM_VALIDATE_TOKEN, { systemUsername: configs.SYSTEM_TOKEN.SYSTEM_USERNAME, token: req.body.authToken });
         // Console.log(result)
         if (result.data.validToken) {
-            // Check if user exists in Db
-            const user = await getUserById(req.body.userId);
-            if (user === null) {
-                req.session.isNewUser = true;
-                const userobj = await createUser(req.body);
-                console.log('userobj', userobj);
-            } else {
-                req.session.isNewUser = false;
-            }
             req.session.isAuthenticated = true;
 
             req.session.details = {
@@ -29,6 +20,15 @@ const validateAuth = async (req, res, next) => {
                 courseName: req.body.courseName,
                 isCourseCompleted: req.body.isCourseCompleted
             };
+            // Check if user exists in Db
+            const user = await getUserById(req.body.userId);
+            if (user === null) {
+                req.session.details.isNewUser = true;
+                const userobj = await createUser(req.body);
+                console.log('userobj', userobj);
+            } else {
+                req.session.details.isNewUser = false;
+            }
 
         }
         return next();
