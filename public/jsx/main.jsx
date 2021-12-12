@@ -34,26 +34,26 @@ class MainRouter extends React.Component {
             {/* User authorized */}
             {
                 isUserSignedIn && <Container maxWidth='lg'>
-                    <GameHeader />
+                    <GameHeader value='Wiley Gaming Platform'/>
                     {
-                        isUserConnectedToGame && <Spinner type={'inherit'}/>
+                        isUserConnectedToGame && <Spinner type={'inherit'} />
                     }
                     <GamePanel />
-                    <Notifier/>
+                    <Notifier />
                 </Container>
             }
 
             {/* Uer not authorized */}
             {
                 isUserSignedIn !== null && !isUserSignedIn && <MessageDialog status={true} title={'Access Error'}
-                    message={'You are not authorized. Please contatct support.'}/>
+                    message={'You are not authorized. Please contatct support.'} />
             }
             {
-                isUserSignedIn !== null && !isUserSignedIn && <SupportCard/>
+                isUserSignedIn !== null && !isUserSignedIn && <SupportCard />
             }
 
             {/* Question Loader */}
-            <QuestionLoaderDialog/>
+            <QuestionLoaderDialog />
         </>;
     }
 

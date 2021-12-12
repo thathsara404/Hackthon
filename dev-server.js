@@ -5,7 +5,7 @@ const app = require('./app');
 const gameRoomServer = require('./gameRoomWebSocketServer');
 const config = require('./app/config/config');
 
-const entryFiles = ['./public/main.html', './public/testharness.html'];
+const entryFiles = ['./public/main.html', './public/testharness.html', './public/certification.html'];
 const options = {
     outDir: './dist',
     publicUrl: '/web-app',

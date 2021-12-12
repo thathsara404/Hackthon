@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
@@ -5,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
+import SearchBar from './searchBar';
 
 const useStyles = makeStyles({
     root: {
@@ -14,11 +16,11 @@ const useStyles = makeStyles({
 
 const appBarLabel = (label) => {
     return (
-        <Toolbar>
-            <Typography variant='h4' noWrap component='div' sx={{ flexGrow: 1 }}>
-                {label}
-            </Typography>
-        </Toolbar>
+        <Typography variant='h4' noWrap component='div' sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
+            {label + ' '}
+            {label === 'Wiley Gaming Competition Certification'
+                && <sub style={{ fontSize: '10px' }}> powered by blockchain</sub>}
+        </Typography>
     );
 };
 
@@ -31,14 +33,18 @@ const darkTheme = createTheme({
     }
 });
 
-export default function GameHeader () {
+export default function GameHeader (props) {
     // Style
     const classes = useStyles();
     return (
         <Stack className={classes.root} spacing={3} sx={{ flexGrow: 1 }}>
             <ThemeProvider theme={darkTheme}>
                 <AppBar position='static' color='primary'>
-                    {appBarLabel('Wiley Gaming Platform')}
+                    <Toolbar>
+                        {appBarLabel(props.value)}
+                        {props.value === 'Wiley Gaming Competition Certification'
+                            && <SearchBar changeSearchState={props.changeSearchState} />}
+                    </Toolbar>
                 </AppBar>
             </ThemeProvider>
         </Stack>
