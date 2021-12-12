@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
-import { getSessionById } from '../../../js/redux/thunk/gameRoomThunk';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLastGameSession } from '../../../js/redux/thunk/gameRoomThunk';
+import { getUserDetails } from '../../../js/redux/selector/userSelector';
+import { getPlayedGamesCounter } from '../../../js/redux/selector/gameRoomSelector';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,7 +11,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
@@ -44,11 +45,27 @@ const createData = (name, rank, score, attempts) => {
 };
 
 const mockRows = [
-    createData('Daham', 1, 100, 10),
-    createData('Sahan', 2, 90, 12),
-    createData('Sanka', 3, 80, 8),
-    createData('Dineth', 4, 70, 2),
-    createData('Dinesh', 5, 60, 1)
+    [
+        createData('Daham', 1, 100, 10),
+        createData('Sahan', 2, 90, 12),
+        createData('Sanka', 3, 80, 8),
+        createData('Dineth', 4, 70, 2),
+        createData('Dinesh', 5, 60, 1)
+    ],
+    [
+        createData('John', 1, 94, 10),
+        createData('Kasun', 2, 89, 8),
+        createData('Marie', 3, 84, 7),
+        createData('Rehana', 4, 66, 7),
+        createData('Lahiru', 5, 54, 5)
+    ],
+    [
+        createData('Jonas', 1, 278, 10),
+        createData('Carrie', 2, 238, 9),
+        createData('Arthur', 3, 194, 6),
+        createData('Supun', 4, 124, 5),
+        createData('Nuwan', 5, 70, 3)
+    ]
 ];
 
 const setRank = (userStats) => {
@@ -64,11 +81,14 @@ export default function ScoreCardContent ({ showLastSession }) {
 
     const dispatch = useDispatch();
 
+    const userDetails = useSelector(getUserDetails);
+    const playedGamesCounter = useSelector(getPlayedGamesCounter);
+
     const [rows, setRows] = React.useState([]);
 
     React.useEffect(() => {
         if (showLastSession) {
-            dispatch(getSessionById(1)).then((result) => {
+            dispatch(getLastGameSession('45789545')).then((result) => {
                 let rowsArray = JSON.parse(JSON.stringify(result.userStats));
                 rowsArray = setRank(rowsArray);
                 rowsArray = rowsArray.map(stat => {
@@ -79,7 +99,8 @@ export default function ScoreCardContent ({ showLastSession }) {
                 console.error('Error occurred while retrieving last game session: ', error);
             });
         } else {
-            setRows(mockRows);
+            const selection = playedGamesCounter % 3;
+            setRows(mockRows[selection]);
         }
     }, [showLastSession]);
 

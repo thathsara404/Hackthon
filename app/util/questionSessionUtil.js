@@ -38,7 +38,7 @@ module.exports = {
                     'buckets': 5, 
                     'output': {
                         'userId': { $first: '$userId' },
-                        'userName': { $first: '$user.userName' },
+                        'userName': { $first: '$user.username' },
                         'documents': {
                             '$push': {
                                 'correctAnswer': '$correctAnswer.correctAnswer', 

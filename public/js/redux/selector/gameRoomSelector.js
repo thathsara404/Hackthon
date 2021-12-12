@@ -26,3 +26,5 @@ export const getCurrentQuestionRemaingTime = state => state.gameRoom?.currentQue
 
 export const getIsLastGameFinished = state => state.gameRoom?.isLastGameFinished;
 
+export const getPlayedGamesCounter = state => state.gameRoom?.playedGamesCounter;
+

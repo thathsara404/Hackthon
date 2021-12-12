@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const gameSessionSchema = new Schema({
     gameSessionId: String,
     userStats: [{
-        userId: Number,
+        userId: String,
         userName: String,
         marks: Number
     }]

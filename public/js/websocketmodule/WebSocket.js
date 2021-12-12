@@ -6,7 +6,7 @@ import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
     UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
     UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID,
     UPDATE_CURRENT_QUESTION, UPDATE_QUESTION_COUNT, UPDATE_QUESTION_REMAING_TIME,
-    UPDATE_LAST_GAME_FINISHED
+    UPDATE_LAST_GAME_FINISHED, UPDATE_PLAYED_GAMES_COUNTER
 } from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
 import config from '../../../app/config/config';
@@ -131,6 +131,7 @@ export class WebSocket {
                             payload: 0 });
                         store.dispatch({ type: UPDATE_LAST_GAME_FINISHED,
                             payload: false });
+                        store.dispatch({ type: UPDATE_PLAYED_GAMES_COUNTER });
                     }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_DISPLAY_COMPLETED_GAME_MESSAGE);
                     store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
                         payload: false });
