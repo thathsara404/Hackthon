@@ -12,6 +12,7 @@ import Spinner from './body/spinner/spinner';
 import MessageDialog from './body/dialog/dialog';
 import SupportCard from './body/contactSupport/supportCard';
 import QuestionLoaderDialog from './body/gameRoomItems/questionLoaderDIalog';
+import AskNIC from './body/scorePanelItems/askId';
 
 class MainRouter extends React.Component {
 
@@ -34,7 +35,7 @@ class MainRouter extends React.Component {
             {/* User authorized */}
             {
                 isUserSignedIn && <Container maxWidth='lg'>
-                    <GameHeader value='Wiley Gaming Platform'/>
+                    <GameHeader value='Wiley Gaming Platform' />
                     {
                         isUserConnectedToGame && <Spinner type={'inherit'} />
                     }
@@ -54,6 +55,7 @@ class MainRouter extends React.Component {
 
             {/* Question Loader */}
             <QuestionLoaderDialog />
+            <AskNIC />
         </>;
     }
 

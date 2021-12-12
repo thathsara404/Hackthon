@@ -16,9 +16,13 @@ export const getGameStartedStatus = state => state.gameRoom?.newGameStarted;
 
 export const getCurrentQuestion = state => state.gameRoom?.currentQuestion;
 
+export const getCurrentQuestionId = state => state.gameRoom?.currentQuestionID;
+
 export const getLiveUsersInfo = state => state.gameRoom?.liveUsersInfo;
 
 export const getCurrentQuestionCount = state => state.gameRoom?.sessionQuestionCount;
 
 export const getCurrentQuestionRemaingTime = state => state.gameRoom?.currentQuestionRemainingTime;
+
+export const getIsLastGameFinished = state => state.gameRoom?.isLastGameFinished;
 

@@ -15,6 +15,7 @@ This is the documentation for "Learn to Earn - WEL" Hackathon Project
 - MUI - Icons and Components
 - Redis - ioredis (Redis Client)
 - Mongo DB
+- Ethereum Blockchain : web3
 
 # Steps to run
 - Setup a Mongo database with the information in the config.js file

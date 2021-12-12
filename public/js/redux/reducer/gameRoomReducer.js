@@ -4,7 +4,8 @@ import { UPDATE_LIVE_USERS, UPDATE_LIVE_USERS_INFO, USER_CONNECTED,
     UPDATE_PENDING_GAME_ROOM_REQUESTS,
     UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO, UPDATE_USER_STATUS_IN_SUB_ROOM,
     UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID,
-    UPDATE_CURRENT_QUESTION, UPDATE_QUESTION_COUNT, UPDATE_QUESTION_REMAING_TIME } from '../action/gameRoomAction';
+    UPDATE_CURRENT_QUESTION, UPDATE_QUESTION_COUNT, UPDATE_QUESTION_REMAING_TIME,
+    UPDATE_LAST_GAME_FINISHED } from '../action/gameRoomAction';
 
 const initialState = {
     liveUsers: [],
@@ -17,7 +18,8 @@ const initialState = {
     currentSubRoomId: null,
     currentQuestion: null,
     sessionQuestionCount: 0,
-    currentQuestionRemainingTime: 0
+    currentQuestionRemainingTime: 0,
+    isLastGameFinished: false
 };
 
 export const gameRoom = (state = initialState, action) => {
@@ -52,7 +54,8 @@ export const gameRoom = (state = initialState, action) => {
             return { ...state, currentSubRoomId: payload };
         }
         case UPDATE_CURRENT_QUESTION: {
-            return { ...state, currentQuestion: payload };
+            console.log('reducerrr', payload);
+            return { ...state, currentQuestion: (payload) ? payload[1] : null, currentQuestionID: (payload) ? payload[0] : null };
         }
         case UPDATE_QUESTION_COUNT: {
             let newQuestionCount = 0;
@@ -65,6 +68,9 @@ export const gameRoom = (state = initialState, action) => {
         }
         case UPDATE_QUESTION_REMAING_TIME: {
             return { ...state, currentQuestionRemainingTime: payload };
+        }
+        case UPDATE_LAST_GAME_FINISHED: {
+            return { ...state, isLastGameFinished: payload };
         }
         default: {
             return state;

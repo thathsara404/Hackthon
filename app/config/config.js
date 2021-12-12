@@ -30,8 +30,8 @@ const config = {
     SESSION: {
         COLLECTION_NAME: 'userSessions',
         SECRET: process.env.SESSION_SECRET || 'KmJHHcaapqzaMxUF5nfp',
-        // 10 min session timeout
-        MAX_AGE: process.env.SESSION_MAXAGE || 600000,
+        // 10 *2 min session timeout
+        MAX_AGE: process.env.SESSION_MAXAGE || 600000 * 2,
         SAME_SITE: process.env.SESSION_SAME_SITE || false,
         SAVE_UNINITIALIZED: process.env.SESSION_SAVE_UNINITIALIZED || false,
         RESAVE: process.env.SESSION_RESAVE || false,
@@ -41,7 +41,7 @@ const config = {
     QUESTION_SETTINGS: {
         NUM_OF_QUESTIONS_PER_GAME: process.env.NUM_OF_QUESTIONS_PER_GAME || 3,
         NUM_OF_USERS_PER_GAME: process.env.NUM_OF_USERS_PER_GAME || 2,
-        QUESTION_TIMEOUT: process.env.QUESTION_TIMEOUT || 3000,
+        QUESTION_TIMEOUT: process.env.QUESTION_TIMEOUT || 5000,
         TIME_OUT_VALUE_END_GAME_MESSAGE: process.env.TIME_OUT_VALUE_END_GAME_MESSAGE || 3000,
         // Should be lesser than 1 second to the TIME_OUT_VALUE_START_GAME_UI_MESSAGE
         TIME_OUT_VALUE_START_GAME_MESSAGE: process.env.TIME_OUT_VALUE_START_GAME_MESSAGE || 4000,
@@ -51,8 +51,17 @@ const config = {
     },
     DEFAULT_SOCKET_ROOM: process.env.DEFAULT_SOCKET_ROOM || 'gameSpace',
     SYSTEM_TOKEN: {
-        SYSTEM_VALIDATE_TOKEN:process.env.SYSTEM_VALIDATE_TOKEN || 'http://localhost:8085/system-token/token-api/validateToken',
+        SYSTEM_VALIDATE_TOKEN: process.env.SYSTEM_VALIDATE_TOKEN ||
+            'http://localhost:8085/system-token/token-api/validateToken',
         SYSTEM_USERNAME: process.env.SYSTEM_USER_NAME || 'Test122'
+    },
+    ETHEREUM: {
+        NETWORK: process.env.ACCOUNT_ADDRESS || 'http://127.0.0.1:7545',
+        // Wiley Account
+        ACCOUNT_ADDRESS: process.env.ACCOUNT_ADDRESS || '0x4c242Ac55Bc579eFDC08cf74E0a61e6eDa10F7EF',
+        ACCOUNT_PRIVATE_KEY: process.env.ACCOUNT_PRIVATE_KEY ||
+            '277dde9ae28367a6bb026bf6bceddfe481f25698c54ec3e5bd40d8bffcffea40',
+        SMART_CONTRACT_ADDRESS: process.env.SMART_CONTRACT_ADDRESS || '0x1be0aa9B0Ebe882F9527a689AAAd104239acCf2A'
     }
 };
 

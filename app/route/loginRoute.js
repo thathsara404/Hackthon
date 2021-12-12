@@ -11,7 +11,6 @@ router.post('/validateLogin', loginMiddleware.validateLogin, async (req, res) =>
     res.send({ 'isAuthenticated': req.session.isAuthenticated, 'userDetails': req.session.details });
 });
 
-// TODO: make this method POST
 router.post('/login', authMiddleware.validateAuth, async (req, res) => {
     res.sendFile('main.html', { root: path.dirname(require.main.filename) + '/dist/' });
 });

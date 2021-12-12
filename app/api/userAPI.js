@@ -3,7 +3,6 @@
 const User = require('../data/schema/userSchema');
 const { getUserById } = require('../util/userUtil');
 
-
 module.exports = {
     createUser: async (req, res) => {
         try {
