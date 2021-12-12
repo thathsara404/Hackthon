@@ -129,7 +129,7 @@ const markDownAnswers = (answeredQuestions) => {
     answeredQuestions.forEach(question => {
         const randomSeconds = Math.floor((Math.random() * questionTimeLimit) + 1);
         // Due to type mismatch, we have used == here. No time to parse :D
-        if (question.correctAnswer == question.userSelections.answer) {
+        if (question.correctAnswer === question.userSelections.answer) {
             accumulatedScore += 50 + (questionTimeLimit - randomSeconds) / questionTimeLimit * 100;
         } else {
             if (accumulatedScore > 50) {
@@ -146,6 +146,7 @@ const generateUserStats = async (gameRoomId) => {
     const sessions = await getQuestionSessionsById('12345');
     const userStats = sessions.map(( session ) => {
         const accumulatedScoreForUser = markDownAnswers(session.documents);
+        console.log('------------------->>>>', accumulatedScoreForUser);
         return {
             userId: session.userId,
             userName: session.userName,
@@ -179,14 +180,14 @@ const sendQuestionsToTheGameRoom = (gameRoom, gameSubRoom) => {
         }
 
         try {
-            question = await getQuestion();    
+            question = await getQuestion();  
         } catch (error) {
             console.error('Error in getting question : ', error);
             return;
         }
 
         gameRoom.in(gameSubRoom).emit('message', { 'messageType': MessageTypes.QUESTION,
-            'qestionTemplate': question.template });
+            'qestionTemplate': question.template, 'questionId': question._id });
     }, config.QUESTION_SETTINGS.QUESTION_TIMEOUT);
 };
 

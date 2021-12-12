@@ -5,7 +5,8 @@ import { store } from '../redux/store';
 import { USER_CONNECTED, UPDATE_PENDING_GAME_ROOM_REQUESTS, UPDATE_LIVE_USERS,
     UPDATE_LIVE_USERS_INFO, UPDATE_PENDING_GAME_ROOM_REQUESTS_INFO,
     UPDATE_USER_STATUS_IN_SUB_ROOM, UPDATE_NEW_GAME_STARTED_STATUS, UPDATE_CURRENT_SUBROOM_ID,
-    UPDATE_CURRENT_QUESTION, UPDATE_QUESTION_COUNT, UPDATE_QUESTION_REMAING_TIME
+    UPDATE_CURRENT_QUESTION, UPDATE_QUESTION_COUNT, UPDATE_QUESTION_REMAING_TIME,
+    UPDATE_LAST_GAME_FINISHED
 } from '../redux/action/gameRoomAction';
 import { WebSocketAction } from './webSocketAction';
 import config from '../../../app/config/config';
@@ -106,6 +107,7 @@ export class WebSocket {
             console.log('Message From New Game Room: ', message);
             const messageType = message.messageType;
             const questionTemplate = message.qestionTemplate;
+            const questionId = message.questionId;
             switch (messageType) {
                 case WebSocketAction.START_GAME:
                     store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
@@ -115,6 +117,8 @@ export class WebSocket {
                     // Set this to null initially, to idenify that server stopped sending questions 
                     store.dispatch({ type: UPDATE_CURRENT_QUESTION,
                         payload: null });
+                    store.dispatch({ type: UPDATE_LAST_GAME_FINISHED,
+                        payload: true });
                     // Give some times before closing the screen
                     setTimeout(() => {
                         store.dispatch({ type: UPDATE_NEW_GAME_STARTED_STATUS,
@@ -125,13 +129,15 @@ export class WebSocket {
                             payload: false });
                         store.dispatch({ type: UPDATE_QUESTION_COUNT,
                             payload: 0 });
+                        store.dispatch({ type: UPDATE_LAST_GAME_FINISHED,
+                            payload: false });
                     }, config.QUESTION_SETTINGS.TIME_OUT_VALUE_DISPLAY_COMPLETED_GAME_MESSAGE);
                     store.dispatch({ type: UPDATE_USER_STATUS_IN_SUB_ROOM,
                         payload: false });
                     break;
                 case WebSocketAction.QUESTION:
                     store.dispatch({ type: UPDATE_CURRENT_QUESTION,
-                        payload: questionTemplate });
+                        payload: [questionId, questionTemplate] });
                     store.dispatch({ type: UPDATE_QUESTION_COUNT, payload: 1 });
                     // Update current question remaining time
                     (() => {
@@ -144,7 +150,7 @@ export class WebSocket {
                                 clearInterval(intervalId);
                                 store.dispatch({ type: UPDATE_QUESTION_REMAING_TIME, payload: 0 });
                             }
-                        }, 1000);
+                        }, 900);
                     })();
                     break;
                 default:

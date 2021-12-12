@@ -12,6 +12,7 @@ export const UPDATE_CURRENT_QUESTION = 'UPDATE_CURRENT_QUESTION';
 export const UPDATE_QUESTION_COUNT = 'UPDATE_QUESTION_COUNT';
 export const UPDATE_QUESTION_REMAING_TIME = 'UPDATE_QUESTION_REMAING_TIME';
 export const UPDATE_QUESTION_SESSION_SAVED = 'UPDATE_QUESTION_SESSION_SAVED';
+export const UPDATE_LAST_GAME_FINISHED = 'LAST_GAME_FINISHED';
 
 export const updateLiveUsers = users => ({
     type: UPDATE_LIVE_USERS,
@@ -44,7 +45,7 @@ export const updateUserInSubRoomStatus = isJoinedSubRoom => ({
 });
 
 export const updateNewGameStartedStatus = isGameStarted => ({
-    type: UPDATE_USER_STATUS_IN_SUB_ROOM,
+    type: UPDATE_NEW_GAME_STARTED_STATUS,
     payload: { isGameStarted }
 });
 
@@ -71,4 +72,9 @@ export const updateQuestionRemaingTime = (remaingTime) => ({
 export const updateQuestionSessionSaved = (sessinSaved) => ({
     type: UPDATE_QUESTION_SESSION_SAVED,
     payload: { sessinSaved }
+});
+
+export const updateLastGameFinished = (status) => ({
+    type: UPDATE_LAST_GAME_FINISHED,
+    payload: { status }
 });

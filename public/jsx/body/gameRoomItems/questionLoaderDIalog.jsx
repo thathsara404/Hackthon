@@ -7,7 +7,8 @@ import Typography from '@mui/material/Typography';
 import Slide from '@mui/material/Slide';
 import { useSelector } from 'react-redux';
 import { getCurrentQuestion, getGameStartedStatus,
-    getCurrentQuestionCount, getCurrentQuestionRemaingTime } from '../../../js/redux/selector/gameRoomSelector';
+    getCurrentQuestionCount, getCurrentQuestionRemaingTime, getCurrentQuestionId,
+    getIsLastGameFinished } from '../../../js/redux/selector/gameRoomSelector';
 import QuestionCard from './questionCard';
 import Animation from '../animation/animation';
 import TimeCard from './timeCard';
@@ -20,9 +21,11 @@ export default function QuestionLoaderDialog () {
     const [open, setOpen] = React.useState(false);
 
     const currentQuestion = useSelector(state => getCurrentQuestion(state));
+    const currentQuestionId = useSelector(state => getCurrentQuestionId(state));
     const isGameStarted = useSelector(state => getGameStartedStatus(state));
     const currentQuestionCount = useSelector(state => getCurrentQuestionCount(state));
     const currentQuestionRemainingTime = useSelector(state => getCurrentQuestionRemaingTime(state));
+    const isLastGameFinished = useSelector(state => getIsLastGameFinished(state));
 
     useEffect(() => {
         if (isGameStarted) {
@@ -39,7 +42,7 @@ export default function QuestionLoaderDialog () {
                 open={open}
                 TransitionComponent={Transition}
             >
-                {!currentQuestion && <Animation/>}
+                {!currentQuestion && isLastGameFinished && <Animation/>}
                 <AppBar sx={{ position: 'relative', backgroundColor: 'black' }}>
                     <Toolbar>
                         <Typography sx={{ ml: 2, flex: 1 }} variant='h6' component='div'>
@@ -50,7 +53,8 @@ export default function QuestionLoaderDialog () {
                 <List>
                     <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
                         <QuestionCard currentQuestionCount={currentQuestionCount}
-                            currentQuestion={currentQuestion}></QuestionCard>
+                            currentQuestion={currentQuestion} currentQuestionId={currentQuestionId}
+                            isLGFinished={isLastGameFinished}></QuestionCard>
                         {currentQuestion && <TimeCard timeRemaining={currentQuestionRemainingTime}/>}
                     </Toolbar>
                 </List>

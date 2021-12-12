@@ -30,8 +30,8 @@ const config = {
     SESSION: {
         COLLECTION_NAME: 'userSessions',
         SECRET: process.env.SESSION_SECRET || 'KmJHHcaapqzaMxUF5nfp',
-        // 10 min session timeout
-        MAX_AGE: process.env.SESSION_MAXAGE || 600000,
+        // 10 *2 min session timeout
+        MAX_AGE: process.env.SESSION_MAXAGE || 600000 * 2,
         SAME_SITE: process.env.SESSION_SAME_SITE || false,
         SAVE_UNINITIALIZED: process.env.SESSION_SAVE_UNINITIALIZED || false,
         RESAVE: process.env.SESSION_RESAVE || false,
@@ -41,7 +41,7 @@ const config = {
     QUESTION_SETTINGS: {
         NUM_OF_QUESTIONS_PER_GAME: process.env.NUM_OF_QUESTIONS_PER_GAME || 3,
         NUM_OF_USERS_PER_GAME: process.env.NUM_OF_USERS_PER_GAME || 2,
-        QUESTION_TIMEOUT: process.env.QUESTION_TIMEOUT || 3000,
+        QUESTION_TIMEOUT: process.env.QUESTION_TIMEOUT || 5000,
         TIME_OUT_VALUE_END_GAME_MESSAGE: process.env.TIME_OUT_VALUE_END_GAME_MESSAGE || 3000,
         // Should be lesser than 1 second to the TIME_OUT_VALUE_START_GAME_UI_MESSAGE
         TIME_OUT_VALUE_START_GAME_MESSAGE: process.env.TIME_OUT_VALUE_START_GAME_MESSAGE || 4000,
