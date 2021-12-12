@@ -143,7 +143,7 @@ const markDownAnswers = (answeredQuestions) => {
 
 const generateUserStats = async (gameRoomId) => {
 
-    const sessions = await getQuestionSessionsById('12345');
+    const sessions = await getQuestionSessionsById(gameRoomId);
     const userStats = sessions.map(( session ) => {
         const accumulatedScoreForUser = markDownAnswers(session.documents);
         console.log('------------------->>>>', accumulatedScoreForUser);

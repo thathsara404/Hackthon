@@ -13,6 +13,7 @@ export const UPDATE_QUESTION_COUNT = 'UPDATE_QUESTION_COUNT';
 export const UPDATE_QUESTION_REMAING_TIME = 'UPDATE_QUESTION_REMAING_TIME';
 export const UPDATE_QUESTION_SESSION_SAVED = 'UPDATE_QUESTION_SESSION_SAVED';
 export const UPDATE_LAST_GAME_FINISHED = 'LAST_GAME_FINISHED';
+export const UPDATE_PLAYED_GAMES_COUNTER = 'UPDATE_PLAYED_GAMES_COUNTER';
 
 export const updateLiveUsers = users => ({
     type: UPDATE_LIVE_USERS,
@@ -78,3 +79,7 @@ export const updateLastGameFinished = (status) => ({
     type: UPDATE_LAST_GAME_FINISHED,
     payload: { status }
 });
+
+export const updatePlayedGamesCounter = () => ({
+    type: UPDATE_PLAYED_GAMES_COUNTER
+})

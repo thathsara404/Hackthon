@@ -32,8 +32,8 @@ module.exports = {
     },
     getGameSessionById: async (req, res, next) => {
         try {
-            const data = await getSessionById(req.params.sessionId);
-            res.json(data);
+            const data = await getSessionById(req.params.userId);
+            res.json(data[0]);
         } catch (error) {
             console.error('Error occurred while retrieving game session by id: ', error);
             next(error);

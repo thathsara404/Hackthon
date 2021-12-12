@@ -21,7 +21,8 @@ router.delete('/gameSession/:gameSessionId', loginValidateMiddleware.validateLog
     res.send({ resp: 'under maintainance' });
 });
 
-router.route('/gameSessions/:sessionId')
+router.route('/user/:userId/lastGameSession')
     .get(loginValidateMiddleware.validateLogin, getGameSessionById);
+    // .get(getGameSessionById);
 
 module.exports = router;

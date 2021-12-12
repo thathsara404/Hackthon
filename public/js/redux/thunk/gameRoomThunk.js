@@ -4,9 +4,9 @@ import { HttpUtil } from '../../httpmodule/httpUtil';
 import { API_PATH } from '../../httpmodule/apiPath';
 import { updateQuestionSessionSaved } from '../action/gameRoomAction';
 
-export const getSessionById = (sessionId) => async (dispatch) => {
+export const getLastGameSession = (userId) => async (dispatch) => {
 
-    return HttpUtil.get(`${API_PATH.GET_GAME_SESSION}${sessionId}`).then((result) => {
+    return HttpUtil.get(`${API_PATH.LAST_GAME_SESSION}/${userId}/lastGameSession`).then((result) => {
         return result;
     }).catch((error) => {
         console.error('Error occurred while retrieving last game session: ', error);

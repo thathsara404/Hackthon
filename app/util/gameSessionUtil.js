@@ -2,8 +2,8 @@ const GameSessionModel = require('../data/schema/gameSessionSchema');
 
 module.exports = {
 
-    getSessionById: async (sessionId) => {
-        const session = await GameSessionModel.findOne({ gameSessionId: sessionId }).exec();
+    getSessionById: async (userId) => {
+        const session = await GameSessionModel.find({ userStats: {  $elemMatch: {userId: userId}} }).sort({ _id: -1 }).limit(1).exec();
         return session;
     },
 
